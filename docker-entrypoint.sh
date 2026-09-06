@@ -30,7 +30,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
         --default-language="${GLPI_DEFAULT_LANGUAGE:-pt_BR}"
 else
     echo "Configuração de banco já existe — verificando atualizações de schema..."
-    php bin/console database:update --no-interaction --allow-superuser || true
+    php bin/console database:update --no-interaction --allow-superuser --allow-unstable || true
 fi
 
 # Instala os temas customizados dentro do volume (a imagem os guarda em /opt/glpi-themes,
