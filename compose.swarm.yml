@@ -78,6 +78,8 @@ services:
       GLPI_DB_NAME: ${GLPI_DB_NAME:-glpi}
       GLPI_DB_USER: ${GLPI_DB_USER:-glpi}
       GLPI_DB_PASSWORD: ${GLPI_DB_PASSWORD:?defina GLPI_DB_PASSWORD}
+      # Só o app inicializa o banco; ver docker-entrypoint.sh
+      GLPI_SKIP_DB_INIT: "1"
     volumes:
       - glpi_files:/var/www/glpi/files
       - glpi_config:/var/www/glpi/config

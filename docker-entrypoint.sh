@@ -18,7 +18,21 @@ done
 
 CONFIG_FILE="/var/www/glpi/config/config_db.php"
 
-if [ ! -f "$CONFIG_FILE" ]; then
+# Apenas um serviço pode inicializar o banco. app e cron compartilham o volume
+# glpi_config e rodam este mesmo entrypoint: se ambos executarem database:install
+# eles competem e a importação dos dados padrão falha com chave duplicada.
+if [ "${GLPI_SKIP_DB_INIT:-0}" = "1" ]; then
+    echo "Este serviço não inicializa o banco; aguardando config_db.php..."
+    for _ in $(seq 1 120); do
+        [ -f "$CONFIG_FILE" ] && break
+        sleep 5
+    done
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "config_db.php não apareceu no tempo esperado; abortando." >&2
+        exit 1
+    fi
+    echo "Configuração encontrada."
+elif [ ! -f "$CONFIG_FILE" ]; then
     echo "Nenhuma configuração de banco encontrada — executando instalação inicial..."
     php bin/console database:install \
         --no-interaction --allow-superuser \
