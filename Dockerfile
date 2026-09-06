@@ -11,10 +11,14 @@ ARG PHP_VERSION=8.4
 # ---------------------------------------------------------------------------
 FROM php:${PHP_VERSION}-cli AS builder
 
+# Extensões via install-php-extensions: resolve sozinho as libs de sistema
+# (libonig para mbstring, libicu para intl, libldap, libzip...), o que evita
+# ter de rastrear cada -dev na mão e funciona igual em amd64 e arm64.
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions zip intl ldap mbstring xml curl gd
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git unzip libzip-dev libicu-dev libldap2-dev libxml2-dev \
-    && docker-php-ext-configure ldap \
-    && docker-php-ext-install -j"$(nproc)" zip intl ldap xml mbstring \
+        git unzip curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js 20.x (para o build dos assets front-end)
