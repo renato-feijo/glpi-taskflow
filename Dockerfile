@@ -30,7 +30,7 @@ ARG PHP_EXTENSIONS
 RUN install-php-extensions ${PHP_EXTENSIONS}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git unzip curl ca-certificates \
+        git unzip curl ca-certificates gettext \
     && rm -rf /var/lib/apt/lists/*
 
 # Node.js 20.x (para o build dos assets front-end)
@@ -48,7 +48,16 @@ RUN composer install \
         --no-dev --optimize-autoloader --prefer-dist \
         --no-interaction --no-progress
 
-# Assets front-end (webpack + traduções de ilustrações)
+# Traduções: os tarballs de release do GLPI trazem os .mo prontos, mas quem
+# builda do código-fonte precisa compilá-los. Sem eles, database:install aborta
+# com "Could not find or open file /var/www/glpi/locales/en_GB.mo".
+# Usamos msgfmt direto porque bin/console tools:locales:compile vive sob
+# Glpi\Tools\, que é autoload-dev e portanto ausente num install --no-dev.
+RUN set -eu; \
+    for po in locales/*.po; do msgfmt "$po" -o "${po%.po}.mo"; done; \
+    echo "compilados: $(ls -1 locales/*.mo | wc -l) arquivos .mo"
+
+# Assets front-end
 RUN npm ci \
     && npm run build:pack \
     && npm run build:vue
