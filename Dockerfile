@@ -91,6 +91,25 @@ RUN a2enmod rewrite headers \
     && sed -ri 's!/var/www/html!/var/www/glpi/public!g' /etc/apache2/sites-available/*.conf \
     && sed -ri 's!/var/www/!/var/www/glpi/!g' /etc/apache2/apache2.conf
 
+# Regras de reescrita do GLPI. O projeto nao fornece .htaccess e o DocumentRoot
+# sozinho so resolve a home (via DirectoryIndex): sem isto, /front/login.php e
+# todas as rotas legadas retornam 404 do Apache.
+RUN { \
+        echo '<Directory /var/www/glpi/public>'; \
+        echo '    Require all granted'; \
+        echo '    RewriteEngine On'; \
+        echo ''; \
+        echo '    # Preserva o cabecalho Authorization para a API REST'; \
+        echo '    RewriteCond %{HTTP:Authorization} ^(.+)$'; \
+        echo '    RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]'; \
+        echo ''; \
+        echo '    # Roteia tudo que nao for arquivo real para o front controller'; \
+        echo '    RewriteCond %{REQUEST_FILENAME} !-f'; \
+        echo '    RewriteRule ^(.*)$ index.php [QSA,L]'; \
+        echo '</Directory>'; \
+    } > /etc/apache2/conf-available/glpi.conf \
+    && a2enconf glpi
+
 WORKDIR /var/www/glpi
 
 # Código-fonte + vendor + assets já compilados no stage anterior
