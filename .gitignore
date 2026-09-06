@@ -6,6 +6,8 @@
 !/plugins/.gitkeep
 /files/*/*
 !/files/*/.gitkeep
+# GLPI-TaskFlow: temas customizados versionados (o resto de files/ continua ignorado)
+!/files/_themes/*.scss
 /.buildpath
 /.project
 /.settings/

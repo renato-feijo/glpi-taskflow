@@ -1,0 +1,35 @@
+# Contexto de build do GLPI-TaskFlow.
+# O .git deste fork tem ~920 MB; sem esta exclusão o Portainer envia tudo ao daemon.
+.git
+.github
+.devcontainer
+.docker
+
+# Reinstalados pelo builder (composer install / npm ci)
+node_modules
+vendor
+
+# Não são necessários em produção
+tests
+.tx
+*.md
+
+# Dados de runtime do GLPI (montados como volume).
+# files/_themes NÃO é excluído: o Dockerfile o copia para /opt/glpi-themes.
+files/_cache
+files/_cron
+files/_graphs
+files/_inventories
+files/_locales
+files/_lock
+files/_log
+files/_pictures
+files/_plugins
+files/_rss
+files/_sessions
+files/_tmp
+files/_uploads
+
+# Configuração local de instância
+config/config_db.php
+.env

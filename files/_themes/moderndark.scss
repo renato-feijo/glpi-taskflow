@@ -1,0 +1,100 @@
+/* theme-name: ModernoDark */
+// Paleta customizada GLPI 11 — Tema "ModernoDark"
+// Local: files/_themes/moderndark.scss (GLPI_THEMES_DIR = {GLPI_VAR_DIR}/_themes)
+// Ativar em: Preferências > Ambiente, ou Configuração > Geral > Aparência (padrão do sistema)
+// Após adicionar/editar: limpar cache (Configuração > Geral > Manutenção)
+
+$is-dark: true;
+
+:root[data-glpi-theme="moderndark"] {
+    // --- Base do Tabler ---
+    --tblr-light: #E8F0F7;
+    --tblr-dark: #08111B;
+    --tblr-body-bg: #08111B;               // md-bg
+    --tblr-body-color: #E8F0F7;            // md-text
+    --tblr-bg-surface: #0E1A26;            // md-surface-card
+    --tblr-bg-surface-secondary: #0B1621;  // md-surface-input
+    --tblr-bg-surface-tertiary: #0D1925;   // md-surface-data
+    --tblr-navbar-color: #08111B;
+
+    --tblr-primary-rgb: 73, 212, 208;      // #49D4D0 md-accent
+    --tblr-primary-fg: #072026;            // md-on-accent
+    --tblr-secondary: #A8B7C5;             // md-text-secondary
+    --tblr-secondary-fg: #072026;
+    --tblr-tertiary: #8FA2B3;              // md-text-muted
+    --tblr-muted: #8FA2B3;
+    --tblr-link-color-rgb: 73, 212, 208;
+    --tblr-badge-bg: var(--tblr-light);
+    --tblr-badge-color: var(--tblr-dark);
+
+    // --- Menu principal / topo ---
+    --glpi-mainmenu-bg: #08111B;
+    --glpi-mainmenu-fg: #E8F0F7;
+    --glpi-mainmenu-fg-muted: #E8F0F799;
+    --glpi-mainmenu-active-bg: #132231;    // md-surface-action
+
+    // --- Cabeçalho de formulários (ex: abertura de chamado) ---
+    --glpi-form-header-fg: #49D4D0;
+    --glpi-form-header-bg: #0E1A26;
+    --glpi-form-header-border-color: #203142; // md-border
+
+    // --- Abas ---
+    --glpi-tabs-bg: #0D1925;
+    --glpi-tabs-fg: #A8B7C5;
+    --glpi-tabs-border-color: transparent;
+    --glpi-tabs-active-bg: #132231;
+    --glpi-tabs-active-fg: #E8F0F7;
+    --glpi-tabs-active-border-color: transparent;
+
+    // --- Linha do tempo do chamado (follow-ups, tarefas, soluções) ---
+    --glpi-itil-secondary-bg: #0D1925;
+    --glpi-timeline-fup-bg: #0E1A26;
+    --glpi-timeline-fup-fg: #A8B7C5;
+    --glpi-timeline-fup-border-color: #203142;
+
+    // --- Busca / badges ---
+    --glpi-search-bg: #0B1621;
+    --glpi-search-fg: #E8F0F7;
+    --glpi-search-border-color: #2A3C4D;   // md-border-input
+    --glpi-badge-bg: rgba(73, 212, 208, .10);
+    --glpi-badge-fg: #49D4D0;
+
+    // --- Amostra de cores no seletor de paletas ---
+    --glpi-palette-color-1: #49D4D0;
+    --glpi-palette-color-2: #072026;
+    --glpi-palette-color-3: #0E1A26;
+    --glpi-palette-color-4: #F8B14A;       // md-warning
+
+    // --- Portal de helpdesk (tela do usuário final) ---
+    --glpi-helpdesk-header: #0B1621;
+    --glpi-helpdesk-tiles-section-bg: #0E1A26;
+    --glpi-helpdesk-tabs-section-bg: #0D1925;
+    --glpi-illustrations-header-dark: var(--glpi-mainmenu-bg);
+    --glpi-illustrations-header-light: var(--glpi-helpdesk-header);
+    --glpi-illustrations-primary: #49D4D0;
+    --glpi-illustrations-gradient-1: #216D72;
+    --glpi-illustrations-gradient-2: #102735;
+    --glpi-illustrations-gradient-3: #08111B;
+}
+
+// --- Ajustes finos que vão além de variáveis (raios de painel e fontes) ---
+// Escopados ao tema para não vazar para outras paletas.
+:root[data-glpi-theme="moderndark"] {
+    .card,
+    .tab-content,
+    .form-header {
+        border-radius: 20px; // md-radius-panel
+    }
+
+    .btn-primary {
+        border-radius: 11px; // md-radius-button
+    }
+
+    body {
+        font-family: "DM Sans", var(--tblr-font-sans-serif, sans-serif);
+    }
+
+    h1, h2, h3, .navigationheader, .card-title {
+        font-family: "Manrope", var(--tblr-font-sans-serif, sans-serif);
+    }
+}
