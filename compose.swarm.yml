@@ -86,7 +86,7 @@ services:
       - internal
     entrypoint: ["docker-entrypoint.sh"]
     command: >
-      bash -c "while true; do php bin/console glpi:cron --no-interaction || true; sleep 60; done"
+      bash -c "while true; do php bin/console glpi:cron --no-interaction --allow-superuser || true; sleep 60; done"
     deploy:
       replicas: 1
       restart_policy:

@@ -21,7 +21,7 @@ CONFIG_FILE="/var/www/glpi/config/config_db.php"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Nenhuma configuração de banco encontrada — executando instalação inicial..."
     php bin/console database:install \
-        --no-interaction \
+        --no-interaction --allow-superuser \
         --db-host="${GLPI_DB_HOST}" \
         --db-port="${GLPI_DB_PORT:-3306}" \
         --db-name="${GLPI_DB_NAME}" \
@@ -30,7 +30,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
         --default-language="${GLPI_DEFAULT_LANGUAGE:-pt_BR}"
 else
     echo "Configuração de banco já existe — verificando atualizações de schema..."
-    php bin/console database:update --no-interaction || true
+    php bin/console database:update --no-interaction --allow-superuser || true
 fi
 
 # Instala os temas customizados dentro do volume (a imagem os guarda em /opt/glpi-themes,
@@ -40,7 +40,7 @@ if [ -d /opt/glpi-themes ]; then
     mkdir -p /var/www/glpi/files/_themes
     cp -f /opt/glpi-themes/*.scss /var/www/glpi/files/_themes/ 2>/dev/null || true
     # O GLPI cacheia a lista de temas; limpa para o tema aparecer nas preferências.
-    php bin/console cache:clear --no-interaction || true
+    php bin/console cache:clear --no-interaction --allow-superuser || true
 fi
 
 chown -R www-data:www-data /var/www/glpi/files /var/www/glpi/config /var/www/glpi/marketplace 2>/dev/null || true
