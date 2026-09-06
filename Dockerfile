@@ -6,6 +6,11 @@
 
 ARG PHP_VERSION=8.4
 
+# Lista única de extensões, compartilhada pelos dois stages. O builder precisa
+# delas para o composer passar na checagem de plataforma (ext-bcmath, ext-mysqli
+# e cia.); mantê-las em um só lugar evita que os stages divirjam.
+ARG PHP_EXTENSIONS="apcu bcmath bz2 curl exif gd intl ldap mbstring mysqli opcache simplexml sockets soap xml zip"
+
 # ---------------------------------------------------------------------------
 # Stage 1: build de dependências (composer + npm) com o código-fonte completo
 # ---------------------------------------------------------------------------
@@ -15,7 +20,8 @@ FROM php:${PHP_VERSION}-cli AS builder
 # (libonig para mbstring, libicu para intl, libldap, libzip...), o que evita
 # ter de rastrear cada -dev na mão e funciona igual em amd64 e arm64.
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions zip intl ldap mbstring xml curl gd
+ARG PHP_EXTENSIONS
+RUN install-php-extensions ${PHP_EXTENSIONS}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         git unzip curl ca-certificates \
@@ -49,9 +55,8 @@ FROM php:${PHP_VERSION}-apache AS runtime
 # Extensões PHP exigidas pelo GLPI 11
 # https://github.com/mlocati/docker-php-extension-installer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions \
-        apcu bz2 curl exif gd intl ldap mbstring mysqli \
-        opcache simplexml sockets soap xml zip
+ARG PHP_EXTENSIONS
+RUN install-php-extensions ${PHP_EXTENSIONS}
 
 # Configuração recomendada de OPcache/APCu para produção
 RUN { \
