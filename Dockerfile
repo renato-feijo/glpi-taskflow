@@ -9,6 +9,11 @@ ARG PHP_VERSION=8.4
 # Lista única de extensões, compartilhada pelos dois stages. O builder precisa
 # delas para o composer passar na checagem de plataforma (ext-bcmath, ext-mysqli
 # e cia.); mantê-las em um só lugar evita que os stages divirjam.
+# O script é baixado da release em vez de vir da imagem mlocati/php-extension-installer:
+# a imagem publicada (2 meses) traz um script que falha ao instalar apcu porque o
+# endpoint REST do pecl.php.net responde 404. A release 2.11.12 contorna isso.
+ARG IPE_VERSION=2.11.12
+
 ARG PHP_EXTENSIONS="apcu bcmath bz2 curl exif gd intl ldap mbstring mysqli opcache simplexml sockets soap xml zip"
 
 # ---------------------------------------------------------------------------
@@ -19,7 +24,8 @@ FROM php:${PHP_VERSION}-cli AS builder
 # Extensões via install-php-extensions: resolve sozinho as libs de sistema
 # (libonig para mbstring, libicu para intl, libldap, libzip...), o que evita
 # ter de rastrear cada -dev na mão e funciona igual em amd64 e arm64.
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+ARG IPE_VERSION
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${IPE_VERSION}/install-php-extensions /usr/local/bin/install-php-extensions
 ARG PHP_EXTENSIONS
 RUN install-php-extensions ${PHP_EXTENSIONS}
 
@@ -54,7 +60,8 @@ FROM php:${PHP_VERSION}-apache AS runtime
 
 # Extensões PHP exigidas pelo GLPI 11
 # https://github.com/mlocati/docker-php-extension-installer
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+ARG IPE_VERSION
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/download/${IPE_VERSION}/install-php-extensions /usr/local/bin/install-php-extensions
 ARG PHP_EXTENSIONS
 RUN install-php-extensions ${PHP_EXTENSIONS}
 
