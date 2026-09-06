@@ -1,0 +1,105 @@
+# GLPI-TaskFlow — stack Docker Swarm (Portainer + Traefik + Git)
+#
+# Use este arquivo no Portainer (endpoint Swarm). Para rodar standalone com
+# build local, use compose.prod.yml.
+#
+# Diferencas obrigatorias em relacao ao standalone:
+#   - sem "build": o Swarm nao constroi. A imagem vem do GHCR, publicada pelo
+#     workflow .github/workflows/taskflow-image.yml
+#   - sem "container_name" e sem "depends_on": ignorados pelo Swarm
+#   - labels do Traefik sob "deploy.labels" e com o prefixo traefik.swarm.*
+#   - rede interna precisa ser overlay
+#
+# Pre-requisitos na VPS:
+#   - Traefik com --providers.swarm=true (habilitado em /opt/traefik)
+#   - rede externa "traefik-net" (overlay, attachable)
+#   - DNS de ${GLPI_DOMAIN} apontando para o host
+
+services:
+  app:
+    image: ghcr.io/renato-feijo/glpi-taskflow:latest
+    environment:
+      GLPI_DB_HOST: db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: ${GLPI_DB_NAME:-glpi}
+      GLPI_DB_USER: ${GLPI_DB_USER:-glpi}
+      GLPI_DB_PASSWORD: ${GLPI_DB_PASSWORD:?defina GLPI_DB_PASSWORD}
+      GLPI_DEFAULT_LANGUAGE: ${GLPI_DEFAULT_LANGUAGE:-pt_BR}
+    volumes:
+      - glpi_files:/var/www/glpi/files
+      - glpi_config:/var/www/glpi/config
+      - glpi_marketplace:/var/www/glpi/marketplace
+    networks:
+      - traefik-net
+      - internal
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      labels:
+        - "traefik.enable=true"
+        - "traefik.swarm.network=traefik-net"
+
+        - "traefik.http.routers.glpi-taskflow.rule=Host(`${GLPI_DOMAIN}`)"
+        - "traefik.http.routers.glpi-taskflow.entrypoints=websecure"
+        - "traefik.http.routers.glpi-taskflow.tls=true"
+        - "traefik.http.routers.glpi-taskflow.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
+        - "traefik.http.services.glpi-taskflow.loadbalancer.server.port=80"
+
+        - "traefik.http.routers.glpi-taskflow-insecure.rule=Host(`${GLPI_DOMAIN}`)"
+        - "traefik.http.routers.glpi-taskflow-insecure.entrypoints=web"
+        - "traefik.http.routers.glpi-taskflow-insecure.middlewares=glpi-taskflow-https-redirect"
+        - "traefik.http.middlewares.glpi-taskflow-https-redirect.redirectscheme.scheme=https"
+
+  db:
+    image: mariadb:11.8
+    environment:
+      MARIADB_ROOT_PASSWORD: ${GLPI_DB_ROOT_PASSWORD:?defina GLPI_DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${GLPI_DB_NAME:-glpi}
+      MARIADB_USER: ${GLPI_DB_USER:-glpi}
+      MARIADB_PASSWORD: ${GLPI_DB_PASSWORD:?defina GLPI_DB_PASSWORD}
+    volumes:
+      - glpi_db_data:/var/lib/mysql
+    networks:
+      - internal
+    command: >
+      --sql-mode="NO_ENGINE_SUBSTITUTION"
+      --innodb-file-per-table=1
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+  cron:
+    image: ghcr.io/renato-feijo/glpi-taskflow:latest
+    environment:
+      GLPI_DB_HOST: db
+      GLPI_DB_PORT: "3306"
+      GLPI_DB_NAME: ${GLPI_DB_NAME:-glpi}
+      GLPI_DB_USER: ${GLPI_DB_USER:-glpi}
+      GLPI_DB_PASSWORD: ${GLPI_DB_PASSWORD:?defina GLPI_DB_PASSWORD}
+    volumes:
+      - glpi_files:/var/www/glpi/files
+      - glpi_config:/var/www/glpi/config
+      - glpi_marketplace:/var/www/glpi/marketplace
+    networks:
+      - internal
+    entrypoint: ["docker-entrypoint.sh"]
+    command: >
+      bash -c "while true; do php bin/console glpi:cron --no-interaction || true; sleep 60; done"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+
+networks:
+  traefik-net:
+    external: true
+  internal:
+    driver: overlay
+
+volumes:
+  glpi_db_data:
+  glpi_files:
+  glpi_config:
+  glpi_marketplace:
