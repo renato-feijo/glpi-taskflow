@@ -34879,3 +34879,11 @@ msgstr ""
 #: js/src/vue/Kanban/Kanban.vue:1419
 msgid "There are no columns added to this Kanban yet"
 msgstr ""
+
+#: templates/pages/login.html.twig
+msgid "Show password"
+msgstr ""
+
+#: templates/pages/login.html.twig
+msgid "Hide password"
+msgstr ""

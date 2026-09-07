@@ -36224,3 +36224,11 @@ msgstr "Criar status"
 #: js/src/vue/Kanban/Kanban.vue:1419
 msgid "There are no columns added to this Kanban yet"
 msgstr "Ainda não há colunas adicionadas a este Kanban"
+
+#: templates/pages/login.html.twig
+msgid "Show password"
+msgstr "Mostrar senha"
+
+#: templates/pages/login.html.twig
+msgid "Hide password"
+msgstr "Ocultar senha"
