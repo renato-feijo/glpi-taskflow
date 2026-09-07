@@ -319,7 +319,7 @@ final class DefaultDataManager
         // Rotulo literal em portugues, e nao uma string traduzivel: precisa
         // coincidir com o valor ja gravado no banco desta instancia.
         $observers = $this->getObserversQuestionData();
-        $observers['name'] = 'Compartilhar com...';
+        $observers['name'] = 'Cópia para:';
         $this->addQuestion($section, $observers);
 
         $this->addQuestion($section, $this->getUrgencyQuestionData());
