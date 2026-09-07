@@ -29,7 +29,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04-arm
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -61,9 +61,35 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Fecha o ciclo ate producao. O webhook do Portainer refaz o deploy da
-      # stack a partir do Git e repuxa a imagem -- sem ele, o Swarm trata a
-      # mesma tag "latest" como no-op e nada e recriado.
+      # O Portainer CE nao tem o "Re-pull image" (Business), entao um redeploy
+      # com a mesma tag "latest" seria no-op no Swarm. Em vez de pedir o pull,
+      # tiramos a ambiguidade: o compose passa a apontar para a tag imutavel
+      # deste commit, que o no ainda nao tem e portanto precisa buscar.
+      #
+      # O commit so toca compose.swarm.yml, coberto pelo paths-ignore acima --
+      # nao dispara outro build.
+      - name: Fixar a tag da imagem no compose
+        env:
+          IMAGE_TAG: sha-${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          sed -i -E "s|(image: ghcr\.io/renato-feijo/glpi-taskflow):[^[:space:]]+|\1:${IMAGE_TAG}|g" compose.swarm.yml
+          grep -c "glpi-taskflow:${IMAGE_TAG}" compose.swarm.yml
+
+          if git diff --quiet -- compose.swarm.yml; then
+            echo "compose ja aponta para ${IMAGE_TAG}; nada a commitar."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add compose.swarm.yml
+          git commit -m "Deploy ${IMAGE_TAG} [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
+      # Fecha o ciclo ate producao. O webhook do GitOps faz o Portainer reler a
+      # branch -- agora com a tag deste build no compose -- e redeployar.
       #
       # A URL e um segredo porque quem a tiver redeploya a stack. Se ela nao
       # estiver configurada, o build ainda vale (a imagem esta no GHCR) e o

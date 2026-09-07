@@ -6,6 +6,9 @@
 # Diferencas obrigatorias em relacao ao standalone:
 #   - sem "build": o Swarm nao constroi. A imagem vem do GHCR, publicada pelo
 #     workflow .github/workflows/taskflow-image.yml
+#   - a tag da imagem e reescrita pelo proprio workflow a cada build, para
+#     sha-<commit>. Nao volte para "latest": o Portainer CE nao tem o
+#     "Re-pull image" (Business), e redeployar a mesma tag e no-op no Swarm.
 #   - sem "container_name" e sem "depends_on": ignorados pelo Swarm
 #   - labels do Traefik sob "deploy.labels" e com o prefixo traefik.swarm.*
 #   - rede interna precisa ser overlay
