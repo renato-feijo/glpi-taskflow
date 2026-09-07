@@ -127,21 +127,25 @@
                </div>
                <div class="modal-body text-center">
                   <p>
-                     <img src="{{ path('pics/logos/logo-GLPI-100-grey.png') }}" title="GLPI Logo" style="max-width:100px; height:auto;" />
+                     <img src="{{ path('pics/logos/logo-TaskFlow-grey.png') }}" title="TaskFlow" style="max-width:160px; height:auto;" />
                   </p>
                   {% if not call('\\Glpi\\Toolbox\\VersionParser::isStableRelease', [constant('GLPI_VERSION')]) %}
                       <div class='alert alert-important alert-warning d-flex'>
                         <strong>⚠️  {{ __("This version is UNSTABLE and some SECURITY FIXES may not be included.") }} ⚠️</strong>
                       </div>
                   {% endif %}
-                  <p><a href="https://glpi-project.org/" title="Powered by Teclib and contributors" class="copyright">
-                     <p>GLPI {{ constant('GLPI_VERSION') }}</p>
-                     Copyright (C) 2015-{{ constant('GLPI_YEAR') }} Teclib' and contributors
-                  </a></p>
+                  <p>{{ config('app_name') }} {{ constant('GLPI_VERSION') }}</p>
+                  {# A GPLv3 (secao 5d) exige preservar os avisos legais em interfaces
+                     interativas que os exibem; por isso a atribuicao permanece aqui. #}
+                  <p class="text-muted small">
+                     <a href="https://glpi-project.org/" title="GLPI - Teclib' and contributors" class="copyright">
+                        {{ __('Based on GLPI') }} &mdash; Copyright (C) 2015-{{ constant('GLPI_YEAR') }} Teclib' and contributors &mdash; GPLv3
+                     </a>
+                  </p>
                   {% if found_new_version is not null %}
                      <p>
                         <a href="https://glpi-project.org" target="_blank"
-                           title="{{ __('You will find it on the GLPI-PROJECT.org site.') }}">
+                           title="{{ __('A new upstream version is available.') }}">
                            {{ __('A new version is available: %s.')|format(found_new_version) }}
                            <span class="badge bg-info text-dark">
                               1

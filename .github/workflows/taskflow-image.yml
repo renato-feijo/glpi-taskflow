@@ -12,16 +12,13 @@ on:
   push:
     branches:
       - 11.0/bugfixes
-    paths:
-      - 'Dockerfile'
-      - 'docker-entrypoint.sh'
-      - '.dockerignore'
-      - 'composer.json'
-      - 'composer.lock'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'files/_themes/**'
-      - '.github/workflows/taskflow-image.yml'
+    # Sem paths filter: a imagem empacota a aplicacao inteira (src/, templates/,
+    # public/, locales/...), entao qualquer commit de codigo muda o que roda em
+    # producao. O filtro anterior so cobria Dockerfile e dependencias e teria
+    # deixado passar mudancas de tema, marca e templates sem rebuild.
+    paths-ignore:
+      - '**.md'
+      - 'compose.swarm.yml'
   workflow_dispatch:
 
 concurrency:
