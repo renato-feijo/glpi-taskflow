@@ -309,12 +309,20 @@ final class DefaultDataManager
         $section = array_pop($sections);
 
         // Add questions
-        $this->addQuestion($section, $this->getUrgencyQuestionData());
-        $this->addQuestion($section, $this->getCategoryQuestionData());
-        $this->addQuestion($section, $this->getUserDevicesQuestionData());
-        $this->addQuestion($section, $this->getObserversQuestionData());
-        $this->addQuestion($section, $this->getLocationQuestionData());
+        // Ordem do helpdesk TaskFlow: identificacao do problema primeiro,
+        // urgencia e descricao ao final. "User devices" foi retirado deste
+        // formulario; segue em uso no de solicitacao de servico.
         $title_question = $this->addQuestion($section, $this->getTitleQuestionData());
+        $this->addQuestion($section, $this->getCategoryQuestionData());
+        $this->addQuestion($section, $this->getLocationQuestionData());
+
+        // Rotulo literal em portugues, e nao uma string traduzivel: precisa
+        // coincidir com o valor ja gravado no banco desta instancia.
+        $observers = $this->getObserversQuestionData();
+        $observers['name'] = 'Compartilhar com...';
+        $this->addQuestion($section, $observers);
+
+        $this->addQuestion($section, $this->getUrgencyQuestionData());
         $description_question = $this->addQuestion($section, $this->getDescriptionQuestionData());
         $this->addQuestion($section, $this->getAttachmentsQuestionData());
 
