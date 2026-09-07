@@ -105,12 +105,13 @@ jobs:
             exit 0
           fi
 
-          # O Portainer responde so depois de recriar os servicos, dai o
-          # --max-time generoso. --retry cobre indisponibilidade momentanea.
+          # O Portainer enfileira o deploy e responde 204 na hora: este passo
+          # confirma que o gatilho foi aceito, nao que a stack subiu. O
+          # resultado do deploy se ve no Portainer ou em "docker service ps".
           status=$(curl -sS -o /dev/null -w '%{http_code}' \
             -X POST \
             --retry 3 --retry-delay 15 --retry-all-errors \
-            --max-time 300 \
+            --max-time 60 \
             "${PORTAINER_WEBHOOK_URL}")
 
           if [ "${status}" -ge 200 ] && [ "${status}" -lt 300 ]; then
