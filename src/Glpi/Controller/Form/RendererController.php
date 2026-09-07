@@ -42,6 +42,7 @@ use Glpi\Exception\Http\NotFoundHttpException;
 use Glpi\Form\Condition\Engine;
 use Glpi\Form\Condition\EngineInput;
 use Glpi\Form\Form;
+use Glpi\Form\FormTranslation;
 use Glpi\Form\ServiceCatalog\ServiceCatalog;
 use Glpi\Http\Firewall;
 use Glpi\Security\Attribute\SecurityStrategy;
@@ -104,7 +105,12 @@ final class RendererController extends AbstractController
         }
 
         return $this->render('pages/form_renderer.html.twig', [
-            'title' => $form->fields['name'],
+            // O <h1> da pagina usa translate_form_item_key(); usar o nome bruto
+            // aqui fazia o titulo da aba sair no idioma de origem enquanto o
+            // cabecalho aparecia traduzido. Fallback para o nome bruto quando
+            // nao houver traducao para o idioma da sessao.
+            'title' => FormTranslation::translate($form, Form::TRANSLATION_KEY_NAME)
+                ?: $form->fields['name'],
             'menu' => ['helpdesk', ServiceCatalog::getType()],
             'form' => $form,
             'unauthenticated_user' => $is_unauthenticated_user,
