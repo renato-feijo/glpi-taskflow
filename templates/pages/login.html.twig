@@ -57,7 +57,16 @@
                             {{ __('Password') }}
                         </label>
                     </div>
-                    <input type="password" class="form-control" id="login_password" name="login_password" placeholder="" autocomplete="off"/>
+                    <div class="input-group input-group-flat">
+                        <input type="password" class="form-control" id="login_password" name="login_password" placeholder="" autocomplete="off"/>
+                        <span class="input-group-text">
+                            <button type="button" class="btn btn-ghost-secondary btn-icon border-0 p-0" id="toggle_login_password"
+                                    aria-label="{{ __('Show password') }}" aria-pressed="false" aria-controls="login_password"
+                                    title="{{ __('Show password') }}">
+                                <i class="ti ti-eye"></i>
+                            </button>
+                        </span>
+                    </div>
                 </div>
 
                 {% if config('display_login_source') %}
@@ -135,6 +144,19 @@
     <script type="text/javascript">
         $(function () {
             $('#login_name').focus();
+
+            $('#toggle_login_password').on('click', function () {
+                const button   = $(this);
+                const input    = $('#login_password');
+                const revealed = input.attr('type') === 'text';
+                const label    = revealed ? __('Show password') : __('Hide password');
+
+                input.attr('type', revealed ? 'password' : 'text');
+                button.attr('aria-pressed', revealed ? 'false' : 'true')
+                    .attr('aria-label', label)
+                    .attr('title', label);
+                button.find('i').toggleClass('ti-eye', revealed).toggleClass('ti-eye-off', !revealed);
+            });
         });
     </script>
 {% endblock %}
