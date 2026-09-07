@@ -60,3 +60,5 @@ phpstan.neon
 /tests/e2e/output/
 /tests/e2e/.env.local
 !/tests/e2e/.env
+# Arte-fonte do TaskFlow (JPEGs grandes); os PNGs derivados vao em public/pics/logos
+/img/

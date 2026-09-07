@@ -125,28 +125,36 @@ $is-dark: true;
     --glpi-logo-reduced: var(--glpi-logo-light-reduced);
 
     // As caixas do core sao dimensionadas para a arte do GLPI (100x55, razao
-    // 1.82). Esta logo tem razao 2.557, e o core nao define background-size no
-    // cabecalho: sem estes ajustes apareceria apenas um recorte da imagem.
+    // 1.82) e o cabecalho nao define background-size: sem estes ajustes
+    // apareceria apenas um recorte. A arte atual tem razao 2.462, e a altura
+    // vai a 64px para ocupar a faixa do cabecalho, que e dimensionada pelo
+    // conteudo e acompanha.
     .page .glpi-logo {
         background-size: contain;
         background-position: left center;
-        width: 141px;
-        height: 55px;
+        width: 158px;
+        height: 64px;
     }
 
-    // Reafirmado para que a regra acima nao afete o menu recolhido, que usa o
-    // simbolo quadrado em 40x40.
-    .page .navbar-brand .glpi-logo {
-        background-size: contain;
-        background-position: center;
-        width: 40px;
-        height: 40px;
+    // O core reduz a marca para 40x40 apenas com o menu lateral recolhido, em
+    // telas grandes. A regra precisa do mesmo escopo: sem ele o cabecalho
+    // horizontal, cujo .glpi-logo tambem esta dentro de .navbar-brand, herdava
+    // os 40x40 e a logo ficava pequena.
+    // 992px = breakpoint lg do Bootstrap, escrito literal porque o mixin
+    // media-breakpoint-up nao esta disponivel na compilacao de tema custom.
+    @media (min-width: 992px) {
+        body.navbar-collapsed .navbar-brand .glpi-logo {
+            background-size: contain;
+            background-position: center;
+            width: 40px;
+            height: 40px;
+        }
     }
 
     // Login: o core usa content: var(--logo) numa caixa de 200x110.
     .page-anonymous .glpi-logo {
         width: 281px;
-        height: 110px;
+        height: 114px;
         object-fit: contain;
     }
 }
