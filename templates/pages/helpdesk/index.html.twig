@@ -40,45 +40,6 @@
        through and use all the available width. The content is still using the correct width by redefining manually the
        container size for each sections of the page using container-xl/container-narrow classes#}
     <div class="d-flex flex-column helpdesk-home-container force-full-width">
-        <div class="search-banner d-flex">
-            <div class="scene scene-left">
-                {{ render_scene(scene_left) }}
-            </div>
-            <div class="container-narrow search-banner-content">
-                <h1 class="text-center mb-0" data-testid="home-title">
-                    {{ entity.getHelpdeskHomeTitle() }}
-                </h1>
-
-                {% if entity.isHelpdeskSearchBarEnabled() %}
-                    <div id="search-overlay" class="search-overlay bg-dark"></div>
-                    <div class="input-icon search-bar-container">
-                        <span class="input-icon-addon">
-                            <i class="ti ti-search"></i>
-                        </span>
-                        <input
-                            id="search-input"
-                            type="text"
-                            value=""
-                            class="form-control home-search"
-                            placeholder="{{ __("Search for knowledge base entries or forms") }}"
-                            data-testid="home-search"
-                        >
-                        <section
-                            id="search-results"
-                            class="position-absolute search-result-container w-100 d-none"
-                            aria-label="{{ __("Search results") }}"
-                        >
-                        </section>
-                    </div>
-                {% else %}
-                    {# No search area but keep the same size to keep illustrations layout consistent #}
-                    <div class="search-bar-container-placeholder"></div>
-                {% endif %}
-            </div>
-            <div class="scene scene-right">
-                {{ render_scene(scene_right) }}
-            </div>
-        </div>
         <section class="tiles-banner" aria-label="{{ __("Quick Access") }}" data-testid="quick-access">
             <div class="container-xl">
                 {# Display password alerts #}
@@ -134,6 +95,45 @@
                 </div>
             </div>
         </section>
+        <div class="search-banner d-flex">
+            <div class="scene scene-left">
+                {{ render_scene(scene_left) }}
+            </div>
+            <div class="container-narrow search-banner-content">
+                <h1 class="text-center mb-0" data-testid="home-title">
+                    {{ entity.getHelpdeskHomeTitle() }}
+                </h1>
+
+                {% if entity.isHelpdeskSearchBarEnabled() %}
+                    <div id="search-overlay" class="search-overlay bg-dark"></div>
+                    <div class="input-icon search-bar-container">
+                        <span class="input-icon-addon">
+                            <i class="ti ti-search"></i>
+                        </span>
+                        <input
+                            id="search-input"
+                            type="text"
+                            value=""
+                            class="form-control home-search"
+                            placeholder="{{ __("Search for knowledge base entries or forms") }}"
+                            data-testid="home-search"
+                        >
+                        <section
+                            id="search-results"
+                            class="position-absolute search-result-container w-100 d-none"
+                            aria-label="{{ __("Search results") }}"
+                        >
+                        </section>
+                    </div>
+                {% else %}
+                    {# No search area but keep the same size to keep illustrations layout consistent #}
+                    <div class="search-bar-container-placeholder"></div>
+                {% endif %}
+            </div>
+            <div class="scene scene-right">
+                {{ render_scene(scene_right) }}
+            </div>
+        </div>
         <div class="tickets-banner">
             <div class="container-xl">
                 {{ tabs.showTabsContent() }}

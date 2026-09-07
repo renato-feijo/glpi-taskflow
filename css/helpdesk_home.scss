@@ -113,7 +113,10 @@ header {
     position: relative;
 
     .search-banner-content {
-        padding-top:170px;
+        // 170px existia para afastar o titulo do cabecalho da pagina, quando
+        // esta faixa era o primeiro elemento. Ela agora vem depois dos tiles,
+        // entao o espacamento fica simetrico.
+        padding-top:80px;
         padding-bottom:80px;
     }
 
