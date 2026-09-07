@@ -72,6 +72,16 @@
         flex-wrap: wrap;
         gap: 0 1.5rem;
 
+        // Itens flex tem min-width:auto por padrao, entao uma pergunta se
+        // recusa a encolher abaixo da largura min-content do seu conteudo. O
+        // controle nativo de arquivo e mais largo que a viewport de um celular,
+        // o que alargava o formulario inteiro e dava rolagem horizontal a
+        // pagina, cortando os rotulos. Permitir o encolhimento resolve na raiz,
+        // para qualquer conteudo largo, nao so o campo de anexos.
+        > section {
+            min-width: 0;
+        }
+
         &:not(:last-of-type) {
             // Apply the margin on the items instead of the row itself, to make
             // sure it doesn't take space when all the items inside of the row
