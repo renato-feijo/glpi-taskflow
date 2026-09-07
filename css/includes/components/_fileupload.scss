@@ -47,6 +47,18 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    // Em telas estreitas o controle nativo de arquivo tem largura intrinseca
+    // maior que a viewport (botao "Escolher arquivos" + nome do arquivo), e
+    // max-width nao reduz esse layout interno: o controle transborda e alarga
+    // o formulario inteiro, produzindo rolagem horizontal na pagina. Fixar a
+    // largura em 100% faz o controle acompanhar o container.
+    @media (max-width: 575.98px) {
+        input[type="file"] {
+            width: 100%;
+            min-width: 0;
+        }
+    }
 }
 
 .fileupload.only-uploaded-files input[type="file"] {
