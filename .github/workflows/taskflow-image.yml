@@ -60,3 +60,36 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Fecha o ciclo ate producao. O webhook do Portainer refaz o deploy da
+      # stack a partir do Git e repuxa a imagem -- sem ele, o Swarm trata a
+      # mesma tag "latest" como no-op e nada e recriado.
+      #
+      # A URL e um segredo porque quem a tiver redeploya a stack. Se ela nao
+      # estiver configurada, o build ainda vale (a imagem esta no GHCR) e o
+      # passo so avisa, em vez de marcar a execucao como falha.
+      - name: Redeploy no Portainer
+        env:
+          PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${PORTAINER_WEBHOOK_URL}" ]; then
+            echo "::warning title=Redeploy nao disparado::Configure o segredo PORTAINER_WEBHOOK_URL; redeploy manual pelo Portainer."
+            exit 0
+          fi
+
+          # O Portainer responde so depois de recriar os servicos, dai o
+          # --max-time generoso. --retry cobre indisponibilidade momentanea.
+          status=$(curl -sS -o /dev/null -w '%{http_code}' \
+            -X POST \
+            --retry 3 --retry-delay 15 --retry-all-errors \
+            --max-time 300 \
+            "${PORTAINER_WEBHOOK_URL}")
+
+          if [ "${status}" -ge 200 ] && [ "${status}" -lt 300 ]; then
+            echo "Redeploy disparado (HTTP ${status})."
+          else
+            echo "::error title=Redeploy falhou::Portainer respondeu HTTP ${status}."
+            exit 1
+          fi
