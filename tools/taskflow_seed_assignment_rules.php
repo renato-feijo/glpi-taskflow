@@ -34,9 +34,25 @@ if (PHP_SAPI !== 'cli') {
  *
  * Modulos ausentes desta lista nao ganham regra — o chamado fica sem
  * atribuicao, para triagem manual.
+ *
+ * Hoje os dez apontam para o mesmo grupo: os tres analistas N1 atendem todos
+ * os modulos. Dez regras identicas parecem redundantes, e sao — a alternativa
+ * seria uma regra unica com os dez modulos em OR. Ficaram separadas porque a
+ * divergencia e o futuro esperado: no dia em que um modulo ganhar equipe
+ * propria, muda-se uma linha aqui e reexecuta. Com a regra unica em OR, o
+ * mesmo passo exigiria reestruturar criterio e acao.
  */
 const ATRIBUICAO = [
-    // preencher
+    'SCO' => ['grupo' => 'Suporte N1'],
+    'SMO' => ['grupo' => 'Suporte N1'],
+    'CQM' => ['grupo' => 'Suporte N1'],
+    'SGF' => ['grupo' => 'Suporte N1'],
+    'AET' => ['grupo' => 'Suporte N1'],
+    'FXD' => ['grupo' => 'Suporte N1'],
+    'OAE' => ['grupo' => 'Suporte N1'],
+    'REC' => ['grupo' => 'Suporte N1'],
+    'SAM' => ['grupo' => 'Suporte N1'],
+    'SAD' => ['grupo' => 'Suporte N1'],
 ];
 
 /** Entidade raiz, com herança para as filhas. */
