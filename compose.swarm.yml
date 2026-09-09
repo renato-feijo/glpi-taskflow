@@ -20,7 +20,7 @@
 
 services:
   app:
-    image: ghcr.io/renato-feijo/glpi-taskflow:sha-20da65819dec4c1418444780207633477e4a2f8f
+    image: ghcr.io/renato-feijo/glpi-taskflow:sha-72307ba4c80a8b25acbaa9f64588094188368e0a
     environment:
       GLPI_DB_HOST: db
       GLPI_DB_PORT: "3306"
@@ -74,7 +74,7 @@ services:
         condition: any
 
   cron:
-    image: ghcr.io/renato-feijo/glpi-taskflow:sha-20da65819dec4c1418444780207633477e4a2f8f
+    image: ghcr.io/renato-feijo/glpi-taskflow:sha-72307ba4c80a8b25acbaa9f64588094188368e0a
     environment:
       GLPI_DB_HOST: db
       GLPI_DB_PORT: "3306"
