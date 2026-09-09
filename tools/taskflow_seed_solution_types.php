@@ -15,7 +15,12 @@
  * is_problem, is_change), cada entrada declara onde aparece. Os modulos do
  * DER/PE atendem requisicao e incidente, o mesmo recorte das categorias.
  *
- * Idempotente: identifica pelo nome e corrige as flags que divergirem.
+ * Nao ha tipo "Duplicado": chamado em duplicidade e fechado como Cancelado,
+ * com o motivo na solucao — foi a decisao de processo. Por isso o comentario
+ * do Cancelado cita duplicidade, para o critério aparecer na hora da escolha.
+ *
+ * Idempotente: identifica pelo nome e corrige as flags e o comentario que
+ * divergirem.
  *
  * Uso (dentro do container da aplicacao):
  *   php tools/taskflow_seed_solution_types.php            # aplica
@@ -31,9 +36,27 @@ if (PHP_SAPI !== 'cli') {
 
 const TIPOS = [
     [
+        'name'    => 'Resolvido',
+        'comment' => 'Atendido e resolvido pelo suporte N1.',
+    ],
+    [
+        'name'    => 'Encaminhado ao N2/N3',
+        'comment' => 'Escalado para o SCCD. É por este tipo que se mede quanto '
+                   . 'o N1 absorve e quanto repassa.',
+    ],
+    [
+        'name'    => 'Orientação prestada',
+        'comment' => 'Dúvida sanada, sem alteração em sistema.',
+    ],
+    [
+        'name'    => 'Sem resposta do solicitante',
+        'comment' => 'Fechado por falta de retorno a uma pendência.',
+    ],
+    [
         'name'    => 'Cancelado',
-        'comment' => 'Chamado encerrado sem atendimento: aberto por engano, '
-                   . 'desistência do solicitante ou fora do escopo do suporte N1.',
+        'comment' => 'Chamado encerrado sem atendimento: aberto por engano ou '
+                   . 'em duplicidade, desistência do solicitante, ou fora do '
+                   . 'escopo do suporte N1. O motivo vai na solução.',
     ],
 ];
 
