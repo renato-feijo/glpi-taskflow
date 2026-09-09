@@ -360,9 +360,24 @@ $is-dark: true;
         padding-bottom: 88px;
 
         .card {
-            // --color-card do padrao, com a borda discreta da secao 6.
-            background-color: #1D172B;
-            border-color: #39304C;
+            // O card do portal foge de --color-card e usa o violeta das
+            // ilustracoes (#8062BE, o "gradiente de preenchimento" da secao 2)
+            // aprofundado: mesmo matiz (0,721) e mesma saturacao (0,414), com
+            // a luminosidade de 0,565 para 0,240.
+            //
+            // O #8062BE chapado nao serve de preenchimento: e um tom medio, e
+            // sobre ele nada passa em contraste — titulo #EFEDF8 da 4,11:1,
+            // descricao #A9A0BC da 1,91:1, e a propria ilustracao do card, que
+            // usa esse violeta como accent, sumiria (1,00:1). Aprofundado, o
+            // card le como violeta e a hierarquia volta: titulo 11,81:1,
+            // descricao 5,50:1, ilustracao 6,27:1.
+            background-color: #342457;
+
+            // A borda aqui nao e enfeite. O card fica a 1,11:1 da faixa, ou
+            // seja, praticamente nao se separa dela; e o contorno em #8062BE
+            // (2,87:1 contra o card, 3,19:1 contra a faixa) que delimita cada
+            // um. Por isso ela nao segue a borda discreta da secao 6.
+            border-color: #8062BE;
             box-shadow: 0 28px 70px rgba(0, 0, 0, .18);
 
             // As classes mx-1/my-2 do template sao utilitarios do Bootstrap,
@@ -386,7 +401,10 @@ $is-dark: true;
             // movimento no hover se justifica.
             &:hover {
                 transform: translateY(-1px);
-                border-color: rgba(182, 164, 246, .38);
+                // Sobe do violeta para a lavanda de acao: com a borda em
+                // #8062BE no estado normal, os 38% de lavanda da secao 6
+                // ficariam mais apagados que o repouso, invertendo o efeito.
+                border-color: #B6A4F6;
                 box-shadow: inset 0 3px 0 0 #B6A4F6, 0 28px 70px rgba(0, 0, 0, .22);
             }
         }
