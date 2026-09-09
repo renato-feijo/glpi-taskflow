@@ -1,0 +1,300 @@
+/* theme-name: ModernoDark */
+// Paleta customizada GLPI 11 — Tema "ModernoDark"
+// Local: files/_themes/moderndark.scss (GLPI_THEMES_DIR = {GLPI_VAR_DIR}/_themes)
+// Ativar em: Preferências > Ambiente, ou Configuração > Geral > Aparência (padrão do sistema)
+// Após adicionar/editar: limpar cache (Configuração > Geral > Manutenção)
+
+$is-dark: true;
+
+:root[data-glpi-theme="moderndark"] {
+    // Paleta medida diretamente do painel de destaque do RunPod (amostragem de
+    // pixels da arte de referencia), nao dos tokens de chrome do site.
+    //
+    // A primeira versao usava --background--body (#06040d) e --border--primary
+    // (#ffffff0d): sao os valores das bordas da pagina, quase neutros e a 5% de
+    // alfa. Resultado medido: 1,04:1 de borda contra superficie — invisivel. O
+    // painel da referencia e bem mais violeta e suas bordas ficam em 1,18-1,51:1.
+
+    // --- Base do Tabler ---
+    --tblr-light: #FFFFFF;
+    --tblr-dark: #12101F;
+    --tblr-body-bg: #12101F;               // fundo externo do painel, medido
+    --tblr-body-color: #FFFFFF;
+    --tblr-bg-surface: #211641;            // interior do painel, medido
+    --tblr-bg-surface-secondary: #1A1433;  // campos
+    --tblr-bg-surface-tertiary: #1D1439;
+    --tblr-navbar-color: #12101F;
+
+    // O violeta chapado tem 2,72:1 contra o fundo — reprova AA como cor de
+    // texto. Fica no preenchimento, com texto branco a 6,91:1; o lavanda
+    // (10,02:1) carrega link e destaque. Mesma divisao que o site faz.
+    --tblr-primary-rgb: 93, 41, 240;       // #5D29F0
+    --tblr-primary-fg: #FFFFFF;
+    --tblr-secondary: #A9A2C4;             // 7,73:1, com o mesmo viés violeta
+    --tblr-secondary-fg: #12101F;
+    --tblr-tertiary: #A9A2C4;
+    --tblr-muted: #A9A2C4;
+    --tblr-link-color-rgb: 187, 182, 253;  // #BBB6FD
+
+    // Borda padrao no valor decorativo da referencia (#352B51 sobre o painel,
+    // 1,29:1). Campos de formulario recebem tratamento proprio mais abaixo:
+    // painel e divisoria podem ser sutis, caixa de texto precisa de afordancia.
+    --tblr-border-color: #352B51;
+    --tblr-border-color-translucent: #35285180;
+    --tblr-badge-bg: rgba(93, 41, 240, .22);
+    --tblr-badge-color: #BBB6FD;
+
+    // --- Semanticas (--green--500 / --red--500 / --yellow--500 do site) ---
+    --tblr-success: #76B971;
+    --tblr-danger: #D45453;
+    --tblr-warning: #F4BD72;
+
+    // --- Menu principal / topo ---
+    --glpi-mainmenu-bg: #12101F;
+    --glpi-mainmenu-fg: #FFFFFF;
+    --glpi-mainmenu-fg-muted: #FFFFFFA6;
+    --glpi-mainmenu-active-bg: #2B2150;
+
+    // --- Cabecalho de formularios (ex: abertura de chamado) ---
+    --glpi-form-header-fg: #BBB6FD;
+    --glpi-form-header-bg: #211641;
+    --glpi-form-header-border-color: #4C4179; // borda do card destacado, medida
+
+    // --- Abas ---
+    --glpi-tabs-bg: #1D1439;
+    --glpi-tabs-fg: #A9A2C4;
+    --glpi-tabs-border-color: transparent;
+    --glpi-tabs-active-bg: #2B2150;
+    --glpi-tabs-active-fg: #FFFFFF;
+    --glpi-tabs-active-border-color: transparent;
+
+    // --- Linha do tempo do chamado (follow-ups, tarefas, solucoes) ---
+    --glpi-itil-secondary-bg: #1D1439;
+    --glpi-timeline-fup-bg: #211641;
+    --glpi-timeline-fup-fg: #A9A2C4;
+    --glpi-timeline-fup-border-color: #352B51;
+
+    // --- Busca / badges ---
+    --glpi-search-bg: #1A1433;
+    --glpi-search-fg: #FFFFFF;
+    --glpi-search-border-color: #726699;   // campo: 3,42:1, ver bloco de campos
+    --glpi-badge-bg: rgba(93, 41, 240, .22);
+    --glpi-badge-fg: #BBB6FD;
+
+    // --- Amostra de cores no seletor de paletas ---
+    --glpi-palette-color-1: #5D29F0;
+    --glpi-palette-color-2: #BBB6FD;
+    --glpi-palette-color-3: #211641;
+    --glpi-palette-color-4: #F4BD72;
+
+    // --- Portal de helpdesk (tela do usuario final) ---
+    --glpi-helpdesk-header: #1A1433;
+    --glpi-helpdesk-tiles-section-bg: #211641;
+    --glpi-helpdesk-tabs-section-bg: #1D1439;
+    --glpi-illustrations-header-dark: var(--glpi-mainmenu-bg);
+    --glpi-illustrations-header-light: var(--glpi-helpdesk-header);
+    --glpi-illustrations-primary: #7A4BFF;
+    --glpi-illustrations-gradient-1: #3D18A8;
+    --glpi-illustrations-gradient-2: #322167; // interior do card destacado
+    --glpi-illustrations-gradient-3: #12101F;
+}
+
+// ---------------------------------------------------------------------------
+// Campos de formulario
+// ---------------------------------------------------------------------------
+// A queixa que motivou esta revisao: "as linhas das caixas de texto ficaram
+// quase invisiveis". Duas causas, e as duas eram minhas.
+//
+// A borda decorativa da referencia (1,29:1) e boa para painel e divisoria, mas
+// insuficiente para dizer onde se clica para digitar. A WCAG 1.4.11 pede 3:1
+// para o contorno de um controle; #726699 sobre a superficie de campo da
+// 3,42:1. Por isso o campo nao herda --tblr-border-color: ele tem borda
+// propria, mais clara, e o foco vai para o accent.
+:root[data-glpi-theme="moderndark"] {
+    .form-control,
+    .form-select,
+    .form-check-input,
+    .input-group-text,
+    .select2-container .select2-selection {
+        border-color: #726699;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    .select2-container--focus .select2-selection,
+    .select2-container--open .select2-selection {
+        border-color: #5D29F0;
+        box-shadow: 0 0 0 3px rgba(93, 41, 240, .3);
+    }
+
+    // Placeholder no valor de texto secundario: no dark padrao do Tabler ele
+    // herda uma cor pensada para fundo claro e desaparece.
+    .form-control::placeholder {
+        color: #A9A2C4;
+        opacity: 1;
+    }
+}
+
+// --- Ajustes finos que vao alem de variaveis (raios) ---
+// Escopados ao tema para nao vazar para outras paletas.
+//
+// Raios vindos de --radius--m (1.5rem) para paineis e --radius--medium
+// (.625rem) para controles. O site usa raios generosos nos paineis e um raio
+// pequeno e uniforme em botoes e campos.
+//
+// A declaracao de fonte que existia aqui foi removida: pedia "DM Sans" e
+// "Manrope" sem nenhum @font-face ou <link> que as carregasse (nao ha fonte
+// empacotada no repo, nem import de Google Fonts), entao o navegador sempre
+// caiu na pilha padrao do Tabler — a regra nunca teve efeito. O site usa ABC
+// Diatype, que e comercial; se quisermos essa direcao tipografica, o caminho e
+// hospedar uma grotesca livre (Inter e a mais proxima) em /pics ou /lib e
+// declarar @font-face, nao referenciar familia por nome.
+:root[data-glpi-theme="moderndark"] {
+    .card,
+    .tab-content,
+    .form-header {
+        border-radius: 24px; // --radius--m
+    }
+
+    .btn,
+    .form-control,
+    .form-select {
+        border-radius: 10px; // --radius--medium
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Identidade TaskFlow
+// ---------------------------------------------------------------------------
+// O GLPI resolve a marca por variaveis CSS consumidas pelo elemento .glpi-logo
+// (ver css/includes/_base.scss), o que permite trocar a logo em todo o produto
+// sem editar template.
+//
+// Caminhos absolutos, e nao relativos: este SCSS e compilado e servido por
+// /front/css.php, cuja URL nao guarda relacao com /pics. Depende de o GLPI
+// estar na raiz do dominio, que e o caso aqui (DocumentRoot = public/).
+//
+// Duas variantes da mesma arte: a original (texto azul-escuro) para paletas
+// claras, e uma versao com o texto clareado para fundos escuros. O simbolo,
+// em gradiente, serve as duas.
+:root[data-glpi-theme="moderndark"] {
+    --glpi-logo-light: url("/pics/logos/logo-taskflow-light.png");
+    --glpi-logo-dark: url("/pics/logos/logo-taskflow-dark.png");
+    --glpi-logo-light-login: url("/pics/logos/logo-taskflow-light.png");
+    --glpi-logo-dark-login: url("/pics/logos/logo-taskflow-dark.png");
+    --glpi-logo-light-reduced: url("/pics/logos/logo-taskflow-mark.png");
+    --glpi-logo-dark-reduced: url("/pics/logos/logo-taskflow-mark.png");
+
+    --glpi-logo: var(--glpi-logo-light);
+    --glpi-logo-reduced: var(--glpi-logo-light-reduced);
+
+    // As caixas do core sao dimensionadas para a arte do GLPI (100x55, razao
+    // 1.82) e o cabecalho nao define background-size: sem estes ajustes
+    // apareceria apenas um recorte. A arte atual tem razao 2.462, e a altura
+    // vai a 64px para ocupar a faixa do cabecalho, que e dimensionada pelo
+    // conteudo e acompanha.
+    .page .glpi-logo {
+        background-size: contain;
+        background-position: left center;
+        width: 158px;
+        height: 64px;
+    }
+
+    // O core reduz a marca para 40x40 apenas com o menu lateral recolhido, em
+    // telas grandes. A regra precisa do mesmo escopo: sem ele o cabecalho
+    // horizontal, cujo .glpi-logo tambem esta dentro de .navbar-brand, herdava
+    // os 40x40 e a logo ficava pequena.
+    // 992px = breakpoint lg do Bootstrap, escrito literal porque o mixin
+    // media-breakpoint-up nao esta disponivel na compilacao de tema custom.
+    @media (min-width: 992px) {
+        body.navbar-collapsed .navbar-brand .glpi-logo {
+            background-size: contain;
+            background-position: center;
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    // Login: o core usa content: var(--logo) numa caixa de 200x110.
+    .page-anonymous .glpi-logo {
+        width: 281px;
+        height: 114px;
+        object-fit: contain;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Portal do usuario: faixa de acesso rapido (.tiles-banner)
+// ---------------------------------------------------------------------------
+// A faixa usava --glpi-helpdesk-tiles-section-bg com o mesmo valor de
+// --tblr-bg-surface, entao os cards se confundiam com o proprio fundo e a
+// faixa quase nao se distinguia do corpo da pagina. Aqui ela ganha um degrade
+// proprio com um brilho do accent no topo e bordas que a delimitam, e os cards
+// passam a ser mais claros que a faixa, lendo-se como elevados.
+//
+// A regra vem do arquivo de tema (carregado por ultimo, ver Html::includeHeader)
+// e nao de css/helpdesk_home.scss, para nao conflitar com o upstream.
+:root[data-glpi-theme="moderndark"] {
+    .tiles-banner {
+        // O gradiente de hero do site (120deg, #1d0f4d -> #0d0620), com o
+        // brilho do accent no topo. Mantido em 180deg porque a faixa é larga e
+        // baixa: na diagonal o degrade morre antes de atravessá-la.
+        // Interior do painel medido na referencia (#211641), com o brilho
+        // violeta no topo e a borda decorativa (#352B51) delimitando.
+        background:
+            radial-gradient(140% 120% at 50% 0%, rgba(122, 75, 255, .30) 0%, rgba(122, 75, 255, 0) 55%),
+            linear-gradient(180deg, #241848 0%, #1D1439 100%);
+        border-top: 1px solid #4C4179;
+        border-bottom: 1px solid #352B51;
+        padding-top: 88px;
+        padding-bottom: 88px;
+
+        .card {
+            // Card comum da referencia: interior #27253E, borda #2C2B3F.
+            background-color: #27253E;
+            border-color: #453A68;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+
+            // As classes mx-1/my-2 do template sao utilitarios do Bootstrap,
+            // que ja usam !important; sem ele o espacamento maior nao aplica.
+            margin: .5rem !important;
+
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+
+            &:hover {
+                transform: translateY(-3px);
+                // No hover o card assume o tratamento do card destacado da
+                // referencia (interior #322167, borda #4C4179).
+                background-color: #322167;
+                border-color: #4C4179;
+                box-shadow: 0 16px 36px rgba(0, 0, 0, .6);
+            }
+        }
+
+        // Cards maiores apenas a partir do breakpoint lg: abaixo disso as tres
+        // colunas (col-md-4) ja ficam estreitas no core, e aumentar icone e
+        // fonte so agravaria a quebra dos titulos.
+        // 992px escrito literal: os mixins do Bootstrap nao estao disponiveis
+        // na compilacao de tema custom.
+        @media (min-width: 992px) {
+            .card-body {
+                padding: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.375rem;
+            }
+
+            .card-body .text-secondary {
+                font-size: 1rem;
+            }
+
+            // O SVG vem com width/height fixos do render_illustration (70),
+            // entao a escala tem de ser feita no CSS.
+            .card svg {
+                width: 104px;
+                height: 104px;
+            }
+        }
+    }
+}

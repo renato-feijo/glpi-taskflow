@@ -6,160 +6,271 @@
 
 $is-dark: true;
 
+// ---------------------------------------------------------------------------
+// Fontes (padrao Violeta Noturno, secao 4)
+// ---------------------------------------------------------------------------
+// Auto-hospedadas em /public/fonts (ver o README de la). Variaveis: um arquivo
+// por subconjunto cobre 400-700, dai `font-weight: 400 700`.
+//
+// Caminho absoluto pelo mesmo motivo das logos: este SCSS e servido por
+// /front/css.php, cuja URL nao guarda relacao com /fonts.
+//
+// Fora de escopo de tema, a rigor — @font-face nao pertence a uma paleta. Mas
+// e o unico arquivo que este fork acrescenta ao pipeline de CSS, e a
+// alternativa seria alterar css/glpi.scss do upstream.
+@font-face {
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("/fonts/dm-sans-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("/fonts/dm-sans-latin-ext.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: "Manrope";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("/fonts/manrope-latin.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "Manrope";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("/fonts/manrope-latin-ext.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 :root[data-glpi-theme="moderndark"] {
-    // Paleta medida diretamente do painel de destaque do RunPod (amostragem de
-    // pixels da arte de referencia), nao dos tokens de chrome do site.
+    // Paleta do padrao "Violeta Noturno" (FinanciaAuto, v1.0, 09/09/2026),
+    // secao 2, mapeada nas variaveis do GLPI 11.
     //
-    // A primeira versao usava --background--body (#06040d) e --border--primary
-    // (#ffffff0d): sao os valores das bordas da pagina, quase neutros e a 5% de
-    // alfa. Resultado medido: 1,04:1 de borda contra superficie — invisivel. O
-    // painel da referencia e bem mais violeta e suas bordas ficam em 1,18-1,51:1.
+    // Todo o texto do padrao passa em AA com folga: 16,26:1 no principal,
+    // 7,57:1 no secundario, 8,63:1 no lavanda de acao, 7,96:1 no botao. Quem
+    // nao passa e borda, e o proprio documento avisa que nao e auditoria de
+    // acessibilidade — ver o bloco de campos adiante.
 
     // --- Base do Tabler ---
-    --tblr-light: #FFFFFF;
-    --tblr-dark: #12101F;
-    --tblr-body-bg: #12101F;               // fundo externo do painel, medido
-    --tblr-body-color: #FFFFFF;
-    --tblr-bg-surface: #211641;            // interior do painel, medido
-    --tblr-bg-surface-secondary: #1A1433;  // campos
-    --tblr-bg-surface-tertiary: #1D1439;
-    --tblr-navbar-color: #12101F;
+    --tblr-light: #EFEDF8;
+    --tblr-dark: #11101D;
+    --tblr-body-bg: #11101D;               // --color-bg
+    --tblr-body-color: #EFEDF8;            // --color-text
+    --tblr-bg-surface: #201A33;            // --color-surface
+    --tblr-bg-surface-secondary: #171323;  // --color-surface-subtle
+    --tblr-bg-surface-tertiary: #1B1529;   // superficie de dados
+    --tblr-navbar-color: #11101D;
 
-    // O violeta chapado tem 2,72:1 contra o fundo — reprova AA como cor de
-    // texto. Fica no preenchimento, com texto branco a 6,91:1; o lavanda
-    // (10,02:1) carrega link e destaque. Mesma divisao que o site faz.
-    --tblr-primary-rgb: 93, 41, 240;       // #5D29F0
-    --tblr-primary-fg: #FFFFFF;
-    --tblr-secondary: #A9A2C4;             // 7,73:1, com o mesmo viés violeta
-    --tblr-secondary-fg: #12101F;
-    --tblr-tertiary: #A9A2C4;
-    --tblr-muted: #A9A2C4;
-    --tblr-link-color-rgb: 187, 182, 253;  // #BBB6FD
+    // O padrao inverte o accent: preenchimento lavanda claro com texto violeta
+    // escuro, em vez de violeta saturado com texto branco. Rende 7,96:1 no
+    // botao (10,87:1 no hover) e resolve de vez o problema que as duas
+    // tentativas anteriores contornavam — o accent agora serve texto E
+    // preenchimento, sem precisar de duas cores.
+    --tblr-primary-rgb: 182, 164, 246;     // #B6A4F6 --color-accent
+    --tblr-primary-fg: #211431;            // --color-on-accent
+    --tblr-secondary: #A9A0BC;             // --color-muted
+    --tblr-secondary-fg: #11101D;
+    --tblr-tertiary: #A9A0BC;
+    --tblr-muted: #A9A0BC;
+    --tblr-link-color-rgb: 182, 164, 246;
+    --tblr-border-color: #39304C;          // --color-border
+    --tblr-border-color-translucent: #39304C99;
+    --tblr-badge-bg: rgba(182, 164, 246, .16);
+    --tblr-badge-color: #D3CBE3;
 
-    // Borda padrao no valor decorativo da referencia (#352B51 sobre o painel,
-    // 1,29:1). Campos de formulario recebem tratamento proprio mais abaixo:
-    // painel e divisoria podem ser sutis, caixa de texto precisa de afordancia.
-    --tblr-border-color: #352B51;
-    --tblr-border-color-translucent: #35285180;
-    --tblr-badge-bg: rgba(93, 41, 240, .22);
-    --tblr-badge-color: #BBB6FD;
-
-    // --- Semanticas (--green--500 / --red--500 / --yellow--500 do site) ---
-    --tblr-success: #76B971;
-    --tblr-danger: #D45453;
-    --tblr-warning: #F4BD72;
+    // --- Semanticas ---
+    // O padrao define so o vermelho destrutivo e deixa explicito que nao ha
+    // paleta de sucesso/aviso: "estabelecer esses estados conforme o produto".
+    // Sucesso e aviso derivados no mesmo registro (dessaturados, luminosos o
+    // bastante para AA sobre o fundo), ja que o GLPI usa os tres.
+    --tblr-danger: #FF7777;                // --color-danger
+    --tblr-success: #7FD69A;
+    --tblr-warning: #E8C07A;
 
     // --- Menu principal / topo ---
-    --glpi-mainmenu-bg: #12101F;
-    --glpi-mainmenu-fg: #FFFFFF;
-    --glpi-mainmenu-fg-muted: #FFFFFFA6;
-    --glpi-mainmenu-active-bg: #2B2150;
+    --glpi-mainmenu-bg: #11101D;
+    --glpi-mainmenu-fg: #EFEDF8;
+    --glpi-mainmenu-fg-muted: #A9A0BC;
+    --glpi-mainmenu-active-bg: #292036;    // fundo do botao secundario
 
     // --- Cabecalho de formularios (ex: abertura de chamado) ---
-    --glpi-form-header-fg: #BBB6FD;
-    --glpi-form-header-bg: #211641;
-    --glpi-form-header-border-color: #4C4179; // borda do card destacado, medida
+    --glpi-form-header-fg: #B6A4F6;
+    --glpi-form-header-bg: #201A33;
+    --glpi-form-header-border-color: #49395D;
 
     // --- Abas ---
-    --glpi-tabs-bg: #1D1439;
-    --glpi-tabs-fg: #A9A2C4;
+    --glpi-tabs-bg: #171323;
+    --glpi-tabs-fg: #A9A0BC;
     --glpi-tabs-border-color: transparent;
-    --glpi-tabs-active-bg: #2B2150;
-    --glpi-tabs-active-fg: #FFFFFF;
+    --glpi-tabs-active-bg: #292036;
+    --glpi-tabs-active-fg: #EFEDF8;
     --glpi-tabs-active-border-color: transparent;
 
     // --- Linha do tempo do chamado (follow-ups, tarefas, solucoes) ---
-    --glpi-itil-secondary-bg: #1D1439;
-    --glpi-timeline-fup-bg: #211641;
-    --glpi-timeline-fup-fg: #A9A2C4;
-    --glpi-timeline-fup-border-color: #352B51;
+    --glpi-itil-secondary-bg: #1B1529;
+    --glpi-timeline-fup-bg: #1D172B;       // --color-card
+    --glpi-timeline-fup-fg: #A9A0BC;
+    --glpi-timeline-fup-border-color: #39304C;
 
     // --- Busca / badges ---
-    --glpi-search-bg: #1A1433;
-    --glpi-search-fg: #FFFFFF;
-    --glpi-search-border-color: #726699;   // campo: 3,42:1, ver bloco de campos
-    --glpi-badge-bg: rgba(93, 41, 240, .22);
-    --glpi-badge-fg: #BBB6FD;
+    --glpi-search-bg: #14101F;             // --color-input
+    --glpi-search-fg: #EFEDF8;
+    --glpi-search-border-color: #755E91;   // elevada, ver bloco de campos
+    --glpi-badge-bg: rgba(182, 164, 246, .16);
+    --glpi-badge-fg: #D3CBE3;
 
     // --- Amostra de cores no seletor de paletas ---
-    --glpi-palette-color-1: #5D29F0;
-    --glpi-palette-color-2: #BBB6FD;
-    --glpi-palette-color-3: #211641;
-    --glpi-palette-color-4: #F4BD72;
+    --glpi-palette-color-1: #B6A4F6;
+    --glpi-palette-color-2: #D8B9F2;
+    --glpi-palette-color-3: #201A33;
+    --glpi-palette-color-4: #11101D;
 
     // --- Portal de helpdesk (tela do usuario final) ---
-    --glpi-helpdesk-header: #1A1433;
-    --glpi-helpdesk-tiles-section-bg: #211641;
-    --glpi-helpdesk-tabs-section-bg: #1D1439;
+    --glpi-helpdesk-header: #171323;
+    --glpi-helpdesk-tiles-section-bg: #201A33;
+    --glpi-helpdesk-tabs-section-bg: #1B1529;
     --glpi-illustrations-header-dark: var(--glpi-mainmenu-bg);
     --glpi-illustrations-header-light: var(--glpi-helpdesk-header);
-    --glpi-illustrations-primary: #7A4BFF;
-    --glpi-illustrations-gradient-1: #3D18A8;
-    --glpi-illustrations-gradient-2: #322167; // interior do card destacado
-    --glpi-illustrations-gradient-3: #12101F;
+    --glpi-illustrations-primary: #B6A4F6;
+    --glpi-illustrations-gradient-1: #8062BE; // gradiente de preenchimento
+    --glpi-illustrations-gradient-2: #2B1C4F; // painel de destaque
+    --glpi-illustrations-gradient-3: #11101D;
+}
+
+// ---------------------------------------------------------------------------
+// Fundo da aplicacao (padrao, secao 3)
+// ---------------------------------------------------------------------------
+// O brilho roxo no alto a direita e a segunda luz, mais discreta, a esquerda.
+// Fixo na viewport: no corpo rolavel do GLPI um gradiente que acompanha a
+// rolagem faz o brilho subir e descer junto com a tabela.
+:root[data-glpi-theme="moderndark"] body {
+    background:
+        radial-gradient(ellipse at 80% 0%, rgba(94, 45, 180, .32), transparent 58%),
+        radial-gradient(ellipse at 12% 65%, rgba(56, 35, 104, .16), transparent 55%),
+        #11101D;
+    background-attachment: fixed;
+}
+
+// ---------------------------------------------------------------------------
+// Tipografia, geometria e sombra (padrao, secoes 4 e 5)
+// ---------------------------------------------------------------------------
+:root[data-glpi-theme="moderndark"] {
+    font-family: "DM Sans", system-ui, sans-serif;
+
+    h1, h2, h3,
+    .navigationheader,
+    .card-title {
+        font-family: "Manrope", system-ui, sans-serif;
+        font-weight: 700;
+    }
+
+    // Raio de painel 20px, cartao 16px, campo 10px, botao principal 11px.
+    .card,
+    .tab-content,
+    .form-header {
+        border-radius: 20px;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, .18);
+    }
+
+    .form-control,
+    .form-select,
+    .input-group-text,
+    .select2-container .select2-selection {
+        border-radius: 10px;
+        min-height: 48px;   // altura de campo do padrao
+    }
+
+    .btn {
+        border-radius: 11px;
+    }
+
+    // Numeros comparaveis alinhados por coluna, conforme a secao 4. Vale nas
+    // listas do GLPI, que sao densas em contadores e datas.
+    .table td,
+    .table th {
+        font-variant-numeric: tabular-nums;
+    }
+
+    // Tabelas: fundo, cabecalho e divisoria do padrao (secao 6).
+    .table {
+        --tblr-table-bg: #1B1529;
+        --tblr-table-border-color: #352942;
+    }
+
+    .table thead th {
+        background-color: #241A35;
+    }
 }
 
 // ---------------------------------------------------------------------------
 // Campos de formulario
 // ---------------------------------------------------------------------------
-// A queixa que motivou esta revisao: "as linhas das caixas de texto ficaram
-// quase invisiveis". Duas causas, e as duas eram minhas.
+// Onde eu me afasto do documento, de proposito e por um motivo que ele mesmo
+// aponta. Medidas das bordas do padrao contra suas superficies:
 //
-// A borda decorativa da referencia (1,29:1) e boa para painel e divisoria, mas
-// insuficiente para dizer onde se clica para digitar. A WCAG 1.4.11 pede 3:1
-// para o contorno de um controle; #726699 sobre a superficie de campo da
-// 3,42:1. Por isso o campo nao herda --tblr-border-color: ele tem borda
-// propria, mais clara, e o foco vai para o accent.
+//   borda padrao   #39304C sobre painel   1,35:1
+//   borda de campo #433653 sobre campo    1,68:1
+//   divisoria      #352942 sobre dados    1,30:1
+//
+// A WCAG 1.4.11 pede 3:1 no contorno de um controle, e a secao 6 do padrao
+// pede "adicionar um indicador de foco visivel de teclado, sem depender apenas
+// desse halo sutil" — o documento avisa que nao e uma auditoria.
+//
+// #755E91 e o proprio #433653 com a luminosidade elevada (mesmo matiz 0,741 e
+// mesma saturacao 0,212, L de 0,269 para 0,470): 3,35:1 sobre o campo e 3,00:1
+// sobre o painel, sem sair da familia de cor da paleta.
+//
+// Bordas decorativas — painel, cartao, divisoria de tabela — ficam nos valores
+// do documento. Sutileza ali e intencional; num campo de texto, nao.
 :root[data-glpi-theme="moderndark"] {
     .form-control,
     .form-select,
     .form-check-input,
     .input-group-text,
     .select2-container .select2-selection {
-        border-color: #726699;
+        background-color: #14101F;
+        border-color: #755E91;
+        color: #EFEDF8;
     }
 
+    // Rotulo de campo do padrao (--color-label, 10,68:1 sobre o painel).
+    .form-label {
+        color: #D3CBE3;
+        font-weight: 600;
+    }
+
+    .form-control::placeholder {
+        color: #A9A0BC;
+        opacity: 1;
+    }
+
+    // Foco: borda lavanda mais o halo do padrao. O halo original tem 9% de
+    // opacidade e sozinho quase nao se ve, entao a borda carrega o estado.
     .form-control:focus,
     .form-select:focus,
     .select2-container--focus .select2-selection,
     .select2-container--open .select2-selection {
-        border-color: #5D29F0;
-        box-shadow: 0 0 0 3px rgba(93, 41, 240, .3);
+        border-color: #B6A4F6;
+        box-shadow: 0 0 0 3px rgba(182, 164, 246, .18);
     }
 
-    // Placeholder no valor de texto secundario: no dark padrao do Tabler ele
-    // herda uma cor pensada para fundo claro e desaparece.
-    .form-control::placeholder {
-        color: #A9A2C4;
-        opacity: 1;
-    }
-}
-
-// --- Ajustes finos que vao alem de variaveis (raios) ---
-// Escopados ao tema para nao vazar para outras paletas.
-//
-// Raios vindos de --radius--m (1.5rem) para paineis e --radius--medium
-// (.625rem) para controles. O site usa raios generosos nos paineis e um raio
-// pequeno e uniforme em botoes e campos.
-//
-// A declaracao de fonte que existia aqui foi removida: pedia "DM Sans" e
-// "Manrope" sem nenhum @font-face ou <link> que as carregasse (nao ha fonte
-// empacotada no repo, nem import de Google Fonts), entao o navegador sempre
-// caiu na pilha padrao do Tabler — a regra nunca teve efeito. O site usa ABC
-// Diatype, que e comercial; se quisermos essa direcao tipografica, o caminho e
-// hospedar uma grotesca livre (Inter e a mais proxima) em /pics ou /lib e
-// declarar @font-face, nao referenciar familia por nome.
-:root[data-glpi-theme="moderndark"] {
-    .card,
-    .tab-content,
-    .form-header {
-        border-radius: 24px; // --radius--m
-    }
-
-    .btn,
-    .form-control,
-    .form-select {
-        border-radius: 10px; // --radius--medium
+    // Foco de teclado visivel em tudo que recebe foco, nao so em campos —
+    // criterio da secao 10 do padrao.
+    :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+        outline: 2px solid #B6A4F6;
+        outline-offset: 3px;
     }
 }
 
@@ -236,38 +347,47 @@ $is-dark: true;
 // e nao de css/helpdesk_home.scss, para nao conflitar com o upstream.
 :root[data-glpi-theme="moderndark"] {
     .tiles-banner {
-        // O gradiente de hero do site (120deg, #1d0f4d -> #0d0620), com o
-        // brilho do accent no topo. Mantido em 180deg porque a faixa é larga e
-        // baixa: na diagonal o degrade morre antes de atravessá-la.
-        // Interior do painel medido na referencia (#211641), com o brilho
-        // violeta no topo e a borda decorativa (#352B51) delimitando.
+        // Painel de destaque do padrao (secao 3): linear-gradient(145deg,
+        // #2b1c4f, #191326), com o brilho circular de lavanda a 6% que o
+        // documento descreve como decorativo. Aqui em 180deg porque a faixa e
+        // larga e baixa: na diagonal o degrade morre antes de atravessa-la.
         background:
-            radial-gradient(140% 120% at 50% 0%, rgba(122, 75, 255, .30) 0%, rgba(122, 75, 255, 0) 55%),
-            linear-gradient(180deg, #241848 0%, #1D1439 100%);
-        border-top: 1px solid #4C4179;
-        border-bottom: 1px solid #352B51;
+            radial-gradient(140% 120% at 50% 0%, rgba(182, 164, 246, .06) 0%, rgba(182, 164, 246, 0) 55%),
+            linear-gradient(180deg, #2B1C4F 0%, #191326 100%);
+        border-top: 1px solid #49395D;
+        border-bottom: 1px solid #39304C;
         padding-top: 88px;
         padding-bottom: 88px;
 
         .card {
-            // Card comum da referencia: interior #27253E, borda #2C2B3F.
-            background-color: #27253E;
-            border-color: #453A68;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+            // --color-card do padrao, com a borda discreta da secao 6.
+            background-color: #1D172B;
+            border-color: #39304C;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, .18);
 
             // As classes mx-1/my-2 do template sao utilitarios do Bootstrap,
             // que ja usam !important; sem ele o espacamento maior nao aplica.
             margin: .5rem !important;
 
+            // 200ms nos controles, conforme a secao 7.
             transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+
+                &:hover {
+                    transform: none;
+                }
+            }
+
+            // "Cartao selecionado ou destacado pode usar borda lavanda a 38%
+            // e linha superior interna de 3px" (secao 6). O card do portal tem
+            // interacao clara — e um link para abrir chamado — entao o
+            // movimento no hover se justifica.
             &:hover {
-                transform: translateY(-3px);
-                // No hover o card assume o tratamento do card destacado da
-                // referencia (interior #322167, borda #4C4179).
-                background-color: #322167;
-                border-color: #4C4179;
-                box-shadow: 0 16px 36px rgba(0, 0, 0, .6);
+                transform: translateY(-1px);
+                border-color: rgba(182, 164, 246, .38);
+                box-shadow: inset 0 3px 0 0 #B6A4F6, 0 28px 70px rgba(0, 0, 0, .22);
             }
         }
 
