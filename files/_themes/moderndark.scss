@@ -158,3 +158,70 @@ $is-dark: true;
         object-fit: contain;
     }
 }
+
+// ---------------------------------------------------------------------------
+// Portal do usuario: faixa de acesso rapido (.tiles-banner)
+// ---------------------------------------------------------------------------
+// A faixa usava --glpi-helpdesk-tiles-section-bg com o mesmo valor de
+// --tblr-bg-surface, entao os cards se confundiam com o proprio fundo e a
+// faixa quase nao se distinguia do corpo da pagina. Aqui ela ganha um degrade
+// proprio com um brilho do accent no topo e bordas que a delimitam, e os cards
+// passam a ser mais claros que a faixa, lendo-se como elevados.
+//
+// A regra vem do arquivo de tema (carregado por ultimo, ver Html::includeHeader)
+// e nao de css/helpdesk_home.scss, para nao conflitar com o upstream.
+:root[data-glpi-theme="moderndark"] {
+    .tiles-banner {
+        background:
+            radial-gradient(140% 120% at 50% 0%, rgba(73, 212, 208, .12) 0%, rgba(73, 212, 208, 0) 55%),
+            linear-gradient(180deg, #0C1A28 0%, #0A1622 100%);
+        border-top: 1px solid rgba(73, 212, 208, .35);
+        border-bottom: 1px solid #203142; // md-border
+        padding-top: 88px;
+        padding-bottom: 88px;
+
+        .card {
+            background-color: #17293A;
+            border-color: #33485C;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
+
+            // As classes mx-1/my-2 do template sao utilitarios do Bootstrap,
+            // que ja usam !important; sem ele o espacamento maior nao aplica.
+            margin: .5rem !important;
+
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+
+            &:hover {
+                transform: translateY(-3px);
+                border-color: rgba(73, 212, 208, .6);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, .6);
+            }
+        }
+
+        // Cards maiores apenas a partir do breakpoint lg: abaixo disso as tres
+        // colunas (col-md-4) ja ficam estreitas no core, e aumentar icone e
+        // fonte so agravaria a quebra dos titulos.
+        // 992px escrito literal: os mixins do Bootstrap nao estao disponiveis
+        // na compilacao de tema custom.
+        @media (min-width: 992px) {
+            .card-body {
+                padding: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.375rem;
+            }
+
+            .card-body .text-secondary {
+                font-size: 1rem;
+            }
+
+            // O SVG vem com width/height fixos do render_illustration (70),
+            // entao a escala tem de ser feita no CSS.
+            .card svg {
+                width: 104px;
+                height: 104px;
+            }
+        }
+    }
+}
