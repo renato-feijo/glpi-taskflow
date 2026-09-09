@@ -7,42 +7,41 @@
 $is-dark: true;
 
 :root[data-glpi-theme="moderndark"] {
-    // Paleta derivada do design system do RunPod (tokens --background--*,
-    // --colors--accent--*, --border--*, lidos da folha publicada do site).
+    // Paleta medida diretamente do painel de destaque do RunPod (amostragem de
+    // pixels da arte de referencia), nao dos tokens de chrome do site.
     //
-    // O original monta as superficies como branco translucido sobre o fundo
-    // (#ffffff03, #ffffff08, #ffffff14). Aqui elas entram achatadas: o Tabler
-    // usa --tblr-bg-surface dentro de gradientes e sombras, onde alfa
-    // acumulado empilha de forma imprevisivel. Valores achatados sobre
-    // #06040d, equivalentes ao que o site renderiza.
+    // A primeira versao usava --background--body (#06040d) e --border--primary
+    // (#ffffff0d): sao os valores das bordas da pagina, quase neutros e a 5% de
+    // alfa. Resultado medido: 1,04:1 de borda contra superficie — invisivel. O
+    // painel da referencia e bem mais violeta e suas bordas ficam em 1,18-1,51:1.
 
     // --- Base do Tabler ---
     --tblr-light: #FFFFFF;
-    --tblr-dark: #06040D;
-    --tblr-body-bg: #06040D;               // --background--body
+    --tblr-dark: #12101F;
+    --tblr-body-bg: #12101F;               // fundo externo do painel, medido
     --tblr-body-color: #FFFFFF;
-    --tblr-bg-surface: #0E0C15;            // --background--elevated  (ffffff08)
-    --tblr-bg-surface-secondary: #090710;  // --background--surface   (ffffff03)
-    --tblr-bg-surface-tertiary: #0C0A13;
-    --tblr-navbar-color: #06040D;
+    --tblr-bg-surface: #211641;            // interior do painel, medido
+    --tblr-bg-surface-secondary: #1A1433;  // campos
+    --tblr-bg-surface-tertiary: #1D1439;
+    --tblr-navbar-color: #12101F;
 
-    // O accent violeta tem apenas 2,95:1 contra o fundo — reprova como cor de
-    // texto (WCAG AA pede 4,5:1). Ele fica so no preenchimento, onde carrega
-    // texto branco a 6,91:1; o papel de "accent legivel" vai para o lavanda
-    // --colors--accent--secondary, que da 10,89:1. E a mesma divisao que o
-    // site faz: violeta em botao, lavanda em link.
-    --tblr-primary-rgb: 93, 41, 240;       // #5D29F0 --colors--accent--primary
+    // O violeta chapado tem 2,72:1 contra o fundo — reprova AA como cor de
+    // texto. Fica no preenchimento, com texto branco a 6,91:1; o lavanda
+    // (10,02:1) carrega link e destaque. Mesma divisao que o site faz.
+    --tblr-primary-rgb: 93, 41, 240;       // #5D29F0
     --tblr-primary-fg: #FFFFFF;
-    --tblr-secondary: #918CA0;             // --text--secondary achatado
-    --tblr-secondary-fg: #06040D;
-    --tblr-tertiary: #918CA0;
-    --tblr-muted: #918CA0;
-    // O --text--tertiary do site (#515056 achatado) fica em 2,55:1: serve para
-    // ornamento, nao para datas e contadores, que e o uso de --tblr-muted no
-    // GLPI. Por isso muted repete o valor de secondary.
-    --tblr-link-color-rgb: 187, 182, 253;  // #BBB6FD --colors--accent--secondary
-    --tblr-border-color: #131119;          // --border--primary (ffffff0d)
-    --tblr-badge-bg: rgba(93, 41, 240, .18);
+    --tblr-secondary: #A9A2C4;             // 7,73:1, com o mesmo viés violeta
+    --tblr-secondary-fg: #12101F;
+    --tblr-tertiary: #A9A2C4;
+    --tblr-muted: #A9A2C4;
+    --tblr-link-color-rgb: 187, 182, 253;  // #BBB6FD
+
+    // Borda padrao no valor decorativo da referencia (#352B51 sobre o painel,
+    // 1,29:1). Campos de formulario recebem tratamento proprio mais abaixo:
+    // painel e divisoria podem ser sutis, caixa de texto precisa de afordancia.
+    --tblr-border-color: #352B51;
+    --tblr-border-color-translucent: #35285180;
+    --tblr-badge-bg: rgba(93, 41, 240, .22);
     --tblr-badge-color: #BBB6FD;
 
     // --- Semanticas (--green--500 / --red--500 / --yellow--500 do site) ---
@@ -51,53 +50,89 @@ $is-dark: true;
     --tblr-warning: #F4BD72;
 
     // --- Menu principal / topo ---
-    --glpi-mainmenu-bg: #06040D;
+    --glpi-mainmenu-bg: #12101F;
     --glpi-mainmenu-fg: #FFFFFF;
-    --glpi-mainmenu-fg-muted: #FFFFFF99;
-    --glpi-mainmenu-active-bg: #1A1820;    // --background--prominent (ffffff14)
+    --glpi-mainmenu-fg-muted: #FFFFFFA6;
+    --glpi-mainmenu-active-bg: #2B2150;
 
     // --- Cabecalho de formularios (ex: abertura de chamado) ---
     --glpi-form-header-fg: #BBB6FD;
-    --glpi-form-header-bg: #0E0C15;
-    --glpi-form-header-border-color: #1F1E26; // --border--strong (ffffff1a)
+    --glpi-form-header-bg: #211641;
+    --glpi-form-header-border-color: #4C4179; // borda do card destacado, medida
 
     // --- Abas ---
-    --glpi-tabs-bg: #0C0A13;
-    --glpi-tabs-fg: #918CA0;
+    --glpi-tabs-bg: #1D1439;
+    --glpi-tabs-fg: #A9A2C4;
     --glpi-tabs-border-color: transparent;
-    --glpi-tabs-active-bg: #1A1820;
+    --glpi-tabs-active-bg: #2B2150;
     --glpi-tabs-active-fg: #FFFFFF;
     --glpi-tabs-active-border-color: transparent;
 
     // --- Linha do tempo do chamado (follow-ups, tarefas, solucoes) ---
-    --glpi-itil-secondary-bg: #0C0A13;
-    --glpi-timeline-fup-bg: #0E0C15;
-    --glpi-timeline-fup-fg: #918CA0;
-    --glpi-timeline-fup-border-color: #1F1E26;
+    --glpi-itil-secondary-bg: #1D1439;
+    --glpi-timeline-fup-bg: #211641;
+    --glpi-timeline-fup-fg: #A9A2C4;
+    --glpi-timeline-fup-border-color: #352B51;
 
     // --- Busca / badges ---
-    --glpi-search-bg: #090710;
+    --glpi-search-bg: #1A1433;
     --glpi-search-fg: #FFFFFF;
-    --glpi-search-border-color: #1F1E26;
-    --glpi-badge-bg: rgba(93, 41, 240, .18);
+    --glpi-search-border-color: #726699;   // campo: 3,42:1, ver bloco de campos
+    --glpi-badge-bg: rgba(93, 41, 240, .22);
     --glpi-badge-fg: #BBB6FD;
 
     // --- Amostra de cores no seletor de paletas ---
     --glpi-palette-color-1: #5D29F0;
     --glpi-palette-color-2: #BBB6FD;
-    --glpi-palette-color-3: #0E0C15;
+    --glpi-palette-color-3: #211641;
     --glpi-palette-color-4: #F4BD72;
 
     // --- Portal de helpdesk (tela do usuario final) ---
-    --glpi-helpdesk-header: #090710;
-    --glpi-helpdesk-tiles-section-bg: #0E0C15;
-    --glpi-helpdesk-tabs-section-bg: #0C0A13;
+    --glpi-helpdesk-header: #1A1433;
+    --glpi-helpdesk-tiles-section-bg: #211641;
+    --glpi-helpdesk-tabs-section-bg: #1D1439;
     --glpi-illustrations-header-dark: var(--glpi-mainmenu-bg);
     --glpi-illustrations-header-light: var(--glpi-helpdesk-header);
-    --glpi-illustrations-primary: #7A4BFF;   // topo do gradiente de accent
-    --glpi-illustrations-gradient-1: #3D18A8; // base do mesmo gradiente
-    --glpi-illustrations-gradient-2: #1D0F4D; // topo do gradiente de hero
-    --glpi-illustrations-gradient-3: #06040D;
+    --glpi-illustrations-primary: #7A4BFF;
+    --glpi-illustrations-gradient-1: #3D18A8;
+    --glpi-illustrations-gradient-2: #322167; // interior do card destacado
+    --glpi-illustrations-gradient-3: #12101F;
+}
+
+// ---------------------------------------------------------------------------
+// Campos de formulario
+// ---------------------------------------------------------------------------
+// A queixa que motivou esta revisao: "as linhas das caixas de texto ficaram
+// quase invisiveis". Duas causas, e as duas eram minhas.
+//
+// A borda decorativa da referencia (1,29:1) e boa para painel e divisoria, mas
+// insuficiente para dizer onde se clica para digitar. A WCAG 1.4.11 pede 3:1
+// para o contorno de um controle; #726699 sobre a superficie de campo da
+// 3,42:1. Por isso o campo nao herda --tblr-border-color: ele tem borda
+// propria, mais clara, e o foco vai para o accent.
+:root[data-glpi-theme="moderndark"] {
+    .form-control,
+    .form-select,
+    .form-check-input,
+    .input-group-text,
+    .select2-container .select2-selection {
+        border-color: #726699;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    .select2-container--focus .select2-selection,
+    .select2-container--open .select2-selection {
+        border-color: #5D29F0;
+        box-shadow: 0 0 0 3px rgba(93, 41, 240, .3);
+    }
+
+    // Placeholder no valor de texto secundario: no dark padrao do Tabler ele
+    // herda uma cor pensada para fundo claro e desaparece.
+    .form-control::placeholder {
+        color: #A9A2C4;
+        opacity: 1;
+    }
 }
 
 // --- Ajustes finos que vao alem de variaveis (raios) ---
@@ -204,17 +239,20 @@ $is-dark: true;
         // O gradiente de hero do site (120deg, #1d0f4d -> #0d0620), com o
         // brilho do accent no topo. Mantido em 180deg porque a faixa é larga e
         // baixa: na diagonal o degrade morre antes de atravessá-la.
+        // Interior do painel medido na referencia (#211641), com o brilho
+        // violeta no topo e a borda decorativa (#352B51) delimitando.
         background:
-            radial-gradient(140% 120% at 50% 0%, rgba(93, 41, 240, .28) 0%, rgba(93, 41, 240, 0) 55%),
-            linear-gradient(180deg, #1D0F4D 0%, #0D0620 100%);
-        border-top: 1px solid rgba(187, 182, 253, .35);
-        border-bottom: 1px solid #1F1E26; // --border--strong
+            radial-gradient(140% 120% at 50% 0%, rgba(122, 75, 255, .30) 0%, rgba(122, 75, 255, 0) 55%),
+            linear-gradient(180deg, #241848 0%, #1D1439 100%);
+        border-top: 1px solid #4C4179;
+        border-bottom: 1px solid #352B51;
         padding-top: 88px;
         padding-bottom: 88px;
 
         .card {
-            background-color: #1A1820; // --background--prominent
-            border-color: #2E2C38;
+            // Card comum da referencia: interior #27253E, borda #2C2B3F.
+            background-color: #27253E;
+            border-color: #453A68;
             box-shadow: 0 12px 30px rgba(0, 0, 0, .5);
 
             // As classes mx-1/my-2 do template sao utilitarios do Bootstrap,
@@ -225,7 +263,10 @@ $is-dark: true;
 
             &:hover {
                 transform: translateY(-3px);
-                border-color: rgba(187, 182, 253, .6);
+                // No hover o card assume o tratamento do card destacado da
+                // referencia (interior #322167, borda #4C4179).
+                background-color: #322167;
+                border-color: #4C4179;
                 box-shadow: 0 16px 36px rgba(0, 0, 0, .6);
             }
         }
