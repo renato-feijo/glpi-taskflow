@@ -4,6 +4,8 @@
 !/marketplace/.gitkeep
 /plugins/*
 !/plugins/.gitkeep
+# GLPI-TaskFlow: plugin próprio versionado (o resto de plugins/ continua ignorado)
+!/plugins/sccd/
 /files/*/*
 !/files/*/.gitkeep
 # GLPI-TaskFlow: temas customizados versionados (o resto de files/ continua ignorado)
