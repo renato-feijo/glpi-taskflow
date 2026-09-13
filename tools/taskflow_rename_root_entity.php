@@ -9,6 +9,11 @@
  *
  * Idempotente: só atualiza se o nome/completename divergirem do esperado.
  *
+ * `Entity::checkRightData()` filtra os campos de input pelas permissões da
+ * sessão antes do update — sem sessão autenticada, `name`/`completename` são
+ * descartados silenciosamente e o `update()` retorna sucesso sem mudar nada.
+ * Por isso o script personifica um Super-Admin antes de atualizar.
+ *
  * Uso (dentro do container da aplicacao):
  *   php tools/taskflow_rename_root_entity.php            # aplica
  *   php tools/taskflow_rename_root_entity.php --dry-run  # so mostra
@@ -21,8 +26,9 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-const ENTITY_ID  = 0;
-const NOVO_NOME  = 'DER/PE';
+const ENTITY_ID     = 0;
+const NOVO_NOME     = 'DER/PE';
+const ADMIN_LOGIN   = 'renato.feijo';
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -30,6 +36,15 @@ $kernel = new Kernel();
 $kernel->boot();
 
 $dry_run = in_array('--dry-run', $argv, true);
+
+$auth = new Auth();
+$auth->user = new User();
+if (!$auth->user->getFromDBbyName(ADMIN_LOGIN)) {
+    printf("!  usuário '%s' não encontrado\n", ADMIN_LOGIN);
+    exit(1);
+}
+$auth->auth_succeded = true;
+Session::init($auth);
 
 $entity = new Entity();
 if (!$entity->getFromDB(ENTITY_ID)) {
