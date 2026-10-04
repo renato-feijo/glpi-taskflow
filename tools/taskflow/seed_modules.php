@@ -7,8 +7,8 @@
  * existir, atualiza o nome e as flags; se não, cria. Rodar de novo é seguro.
  *
  * Uso (dentro do container da aplicação):
- *   php tools/taskflow_seed_modules.php            # aplica
- *   php tools/taskflow_seed_modules.php --dry-run  # só mostra o que faria
+ *   php tools/taskflow/seed_modules.php            # aplica
+ *   php tools/taskflow/seed_modules.php --dry-run  # só mostra o que faria
  *
  * Usa ITILCategory::add()/update() em vez de SQL direto para que o GLPI
  * mantenha `completename`, `level` e os caches da árvore consistentes.
@@ -44,7 +44,7 @@ const MODULES = [
 const ENTITIES_ID  = 0;
 const IS_RECURSIVE = 1;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();

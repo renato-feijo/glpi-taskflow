@@ -19,7 +19,7 @@
  *   TASKFLOW_SMTP_PASSWORD='...' \
  *   TASKFLOW_ADMIN_EMAIL=suporte@exemplo.com.br \
  *   TASKFLOW_ADMIN_NAME='TaskFlow — Suporte N1' \
- *   php tools/taskflow_configure_notifications.php
+ *   php tools/taskflow/configure_notifications.php
  *
  * Opcional: TASKFLOW_SMTP_NO_VERIFY=1 desliga a checagem do certificado do
  * relay (so para relay interno com certificado proprio).
@@ -42,7 +42,7 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();

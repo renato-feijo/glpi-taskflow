@@ -8,8 +8,8 @@
  * preenche o que falta; nunca duplica.
  *
  * Uso (dentro do container da aplicação):
- *   php tools/taskflow_import_sider_categories.php            # aplica
- *   php tools/taskflow_import_sider_categories.php --dry-run  # só mostra
+ *   php tools/taskflow/import_sider_categories.php            # aplica
+ *   php tools/taskflow/import_sider_categories.php --dry-run  # só mostra
  *
  * Origem: export de `glpi_itilcategories` do GLPI legado do DER/PE
  * (2026-09-14). Só o ramo "SIDER" — o restante da árvore exportada (GTI,
@@ -74,7 +74,7 @@ const TREE = [
 const ENTITIES_ID  = 0;
 const IS_RECURSIVE = 1;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();

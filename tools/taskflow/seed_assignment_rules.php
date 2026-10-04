@@ -10,8 +10,8 @@
  * corrige criterio e acao divergentes em vez de duplicar.
  *
  * Uso (dentro do container da aplicacao):
- *   php tools/taskflow_seed_assignment_rules.php            # aplica
- *   php tools/taskflow_seed_assignment_rules.php --dry-run  # so mostra
+ *   php tools/taskflow/seed_assignment_rules.php            # aplica
+ *   php tools/taskflow/seed_assignment_rules.php --dry-run  # so mostra
  */
 
 use Glpi\Kernel\Kernel;
@@ -59,7 +59,7 @@ const ATRIBUICAO = [
 const ENTITIES_ID  = 0;
 const IS_RECURSIVE = 1;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();
@@ -162,7 +162,7 @@ function resolve_usuario(string $login): int
 foreach (ATRIBUICAO as $sigla => $destino) {
     $cat = new ITILCategory();
     if (!$cat->getFromDBByCrit(['code' => $sigla, 'entities_id' => ENTITIES_ID])) {
-        printf("!  módulo '%s' não encontrado (rode taskflow_seed_modules.php antes)\n", $sigla);
+        printf("!  módulo '%s' não encontrado (rode seed_modules.php antes)\n", $sigla);
         exit(1);
     }
     $cat_id = (int) $cat->fields['id'];

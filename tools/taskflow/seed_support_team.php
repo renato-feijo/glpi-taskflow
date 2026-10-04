@@ -12,9 +12,9 @@
  * NAO define senha. Ver o bloco "Autenticacao" no fim deste comentario.
  *
  * Uso (dentro do container da aplicacao):
- *   php tools/taskflow_seed_support_team.php                    # aplica tudo
- *   php tools/taskflow_seed_support_team.php --dry-run          # so mostra
- *   php tools/taskflow_seed_support_team.php --only=renato.feijo
+ *   php tools/taskflow/seed_support_team.php                    # aplica tudo
+ *   php tools/taskflow/seed_support_team.php --dry-run          # so mostra
+ *   php tools/taskflow/seed_support_team.php --only=renato.feijo
  *
  * `--only` existe porque a ordem importa: a conta de quem administra pode ser
  * ajustada ja, mas as contas novas dependem de SMTP funcionando para o dono
@@ -96,7 +96,7 @@ const PESSOAS = [
 const ENTITIES_ID  = 0;
 const IS_RECURSIVE = 1;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();

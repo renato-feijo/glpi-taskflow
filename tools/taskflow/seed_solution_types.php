@@ -23,8 +23,8 @@
  * divergirem.
  *
  * Uso (dentro do container da aplicacao):
- *   php tools/taskflow_seed_solution_types.php            # aplica
- *   php tools/taskflow_seed_solution_types.php --dry-run  # so mostra
+ *   php tools/taskflow/seed_solution_types.php            # aplica
+ *   php tools/taskflow/seed_solution_types.php --dry-run  # so mostra
  */
 
 use Glpi\Kernel\Kernel;
@@ -64,7 +64,7 @@ const TIPOS = [
 const ENTITIES_ID  = 0;
 const IS_RECURSIVE = 1;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();

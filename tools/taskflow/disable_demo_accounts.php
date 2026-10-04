@@ -13,8 +13,8 @@
  * Idempotente: contas ja desativadas sao reportadas e nao tocadas.
  *
  * Uso (dentro do container da aplicacao):
- *   php tools/taskflow_disable_demo_accounts.php            # aplica
- *   php tools/taskflow_disable_demo_accounts.php --dry-run  # so mostra
+ *   php tools/taskflow/disable_demo_accounts.php            # aplica
+ *   php tools/taskflow/disable_demo_accounts.php --dry-run  # so mostra
  */
 
 use Glpi\Kernel\Kernel;
@@ -41,7 +41,7 @@ const AUDITAR = [
     'glpi' => 'glpi',
 ];
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 $kernel = new Kernel();
 $kernel->boot();
