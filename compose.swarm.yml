@@ -93,7 +93,10 @@ services:
     command: >
       bash -c "while true; do php bin/console glpi:cron --no-interaction --allow-superuser || true; sleep 60; done"
     deploy:
-      replicas: 1
+      # Desligado em 04/10/2026: falha a cada minuto (Command "cron" is not
+      # defined) e, rodando como root, cria files/_cache com dono root, o que
+      # derruba o app com 500. Rever comando e usuário antes de religar.
+      replicas: 0
       restart_policy:
         condition: any
 
